@@ -1,0 +1,26 @@
+.sidebar{
+  color: rgba(14, 84, 127) !important;
+}
+
+    .rectangle {
+      height: 225px;
+      width: 160px;
+      background-color: rgb(204, 204, 204);
+    }
+
+.CardContainer{
+  background-color: #f8f9fc;
+  border: none;
+  height: 225px;
+  margin: 12px;
+}
+
+.bookCard{
+  width: 160px;
+  height: 225px;
+  margin-right: 12px;
+  text-align: center;
+  font-family: 'Open Sans';
+  font-size: 1.5rem;
+  padding: 0.25rem;
+}
