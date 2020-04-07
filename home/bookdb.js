@@ -103,7 +103,7 @@ function fetchWishlist(){
 /* PERFORM DATA QUERIES */
 
 function matchFromLibrary(title){
-  db.collection('/wishlist').where("title", '==', title).onSnapshot(function(querySnapshot){
+  db.collection('/wishlist').where('title', '==', title).onSnapshot(function(querySnapshot){
     showNotification('Someone wants to read ' + title);
   });
 }
