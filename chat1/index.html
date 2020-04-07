@@ -1,0 +1,165 @@
+
+<!------ Include the above in your HEAD tag ---------->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <!--FIREBASE-->
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-app.js"></script>
+
+<!-- include firebase database -->
+<script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-database.js"></script>
+
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+
+
+    <!-- Custom CSS -->
+  <link href="main.css" rel="stylesheet">
+
+
+
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+<body>
+
+<div class="messaging">
+  <div class="inbox_msg">
+	<div class="inbox_people">
+	  <div class="headind_srch">
+		<div class="recent_heading">
+		  <h4>Recent</h4>
+		</div>
+		<div class="srch_bar">
+		  <div class="stylish-input-group">
+			<input type="text" class="search-bar"  placeholder="Search" >
+			</div>
+		</div>
+	  </div>
+	  <div class="inbox_chat scroll">
+		<div class="chat_list active_chat">
+		  <div class="chat_people">
+			<div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+			<div class="chat_ib">
+			  <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
+			  <p>Test, which is a new approach to have all solutions 
+				astrology under one roof.</p>
+			</div>
+		  </div>
+		</div>
+		<div class="chat_list">
+		  <div class="chat_people">
+			<div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+			<div class="chat_ib">
+			  <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
+			  <p>Test, which is a new approach to have all solutions 
+				astrology under one roof.</p>
+			</div>
+		  </div>
+		</div>
+		<div class="chat_list">
+		  <div class="chat_people">
+			<div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+			<div class="chat_ib">
+			  <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
+			  <p>Test, which is a new approach to have all solutions 
+				astrology under one roof.</p>
+			</div>
+		  </div>
+		</div>
+		<div class="chat_list">
+		  <div class="chat_people">
+			<div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+			<div class="chat_ib">
+			  <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
+			  <p>Test, which is a new approach to have all solutions 
+				astrology under one roof.</p>
+			</div>
+		  </div>
+		</div>
+		<div class="chat_list">
+		  <div class="chat_people">
+			<div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+			<div class="chat_ib">
+			  <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
+			  <p>Test, which is a new approach to have all solutions 
+				astrology under one roof.</p>
+			</div>
+		  </div>
+		</div>
+		<div class="chat_list">
+		  <div class="chat_people">
+			<div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+			<div class="chat_ib">
+			  <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
+			  <p>Test, which is a new approach to have all solutions 
+				astrology under one roof.</p>
+			</div>
+		  </div>
+		</div>
+		<div class="chat_list">
+		  <div class="chat_people">
+			<div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+			<div class="chat_ib">
+			  <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
+			  <p>Test, which is a new approach to have all solutions 
+				astrology under one roof.</p>
+			</div>
+		  </div>
+		</div>
+	  </div>
+    </div>
+    
+
+    <!----------------------------------------FORM---------------------------------------------->
+	<div class="mesgs">
+	  <div class="msg_history">
+        <form onsubmit="return sendMessage();">
+
+
+            <!--create a list -->
+<ul id="messages"></ul>
+
+        
+
+	  <div class="type_msg">
+		<div class="input_msg_write">
+          <input id="messaage" placeholder="Enter message" autocomplete="off">
+          <input type="submit">
+		</div>
+	  </div>
+	</div>
+  </div>
+</div>
+
+
+
+</form>
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="main.js"></script>
+</body>
+</html>
