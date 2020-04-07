@@ -104,12 +104,31 @@ function fetchWishlist(){
 
 function matchFromLibrary(title){
   db.collection('/wishlist').where("title", '==', title).onSnapshot(function(querySnapshot){
-    console.log('New lMatch! ', title);
+    showNotification('Someone wants to read ' + title);
   });
 }
 
 function matchFromWishlist(title){
   db.collection('/library').where('title', '==', title).onSnapshot(function(querySnapshot){
-    console.log('New wMatch! ', title);
+    showNotification('We found someone who has ' + title);
   });
+}
+
+function showNotification(message){
+
+  if (Notification.permission === 'granted'){
+
+  var notification = new Notification(message);
+  }
+
+  else if (Notification.permission !== "denied") {
+
+    Notification.requestPermission().then(function (permission) {
+      // If the user accepts, let's create a notification
+      if (permission === "granted") {
+
+        var notification = new Notification(message);
+      }
+    });
+  }
 }
