@@ -25,7 +25,9 @@ function submitForm(e){
     $('#addModal').modal('hide')
 
    //Clear form
-   document.getElementById("bookForm").reset();
+   document.getElementById('bookForm').reset();
+
+
 }
 //Function to get form values
 function getInputVal(id){
@@ -74,7 +76,7 @@ function submitForm1(e){
     $('#wishlistModal').modal('hide')
 
    //Clear form
-   document.getElementById("wishlistForm").reset();
+   document.getElementById('wishlistForm').reset();
 }
 //Function to get form values
 function getInputVal1(id){

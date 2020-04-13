@@ -368,13 +368,12 @@
 
             </div>
             </div>
-
-
           </form>
         </div>
       </div>
     </div>
   </div>
+  
 
 
   <!-- Wishlist Modal-->
@@ -383,7 +382,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">What do you wanna read now?</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <button type="button" id= "close" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
@@ -398,7 +397,7 @@
                 <label for="recipient-name" class="col-form-label">Author:</label>
                 <input type="text" class="form-control" id="authorw">
                 <br>
-                <input type="button" value= 'Add' class="btn btn-primary" id="wishButton" onclick= 'addToWishlist();' />
+                <input type="button" value= 'Add' class="btn btn-primary" class= "wishButton" id="wishButton" onclick= 'addToWishlist();' />
               </div>
             </form>
           </div>
@@ -406,6 +405,15 @@
       </div>
     </div>
 
+
+<script>
+ $('#wishButton').submit(function(e) {
+    e.preventDefault();
+    // Coding
+    $('#wishlistModal').modal('toggle'); //or  $('#IDModal').modal('hide');
+    return false;
+});
+  </script>
 
   <!-- Bootstrap core JavaScript-->
   <script src="vendor/jquery/jquery.js"></script>
