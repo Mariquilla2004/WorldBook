@@ -5,25 +5,26 @@ var db = firebase.firestore();
 
 //Listen for form submit
 document.getElementById("bookForm").addEventListener("submit", addToLibrary);
+document.getElementById("wishlistModal").addEventListener("submit", addToWishlist);
 
 //Save the Library book data to firebase.
 function addToLibrary(){
 
   //Input values.
-  var title = document.getElementById('title').value, author = document.getElementById('author').value,
+  var titleL = document.getElementById('title').value, author = document.getElementById('author').value,
   isbn = document.getElementById('ISBN').value;
 
   //Get current user and save data to Firestore.
   var user = firebase.auth().currentUser;
-  db.doc('/library/' + title).set({
-    title: title,
+  db.doc('/library/' + titleL).set({
+    title: titleL,
     author: author,
     isbn: isbn,
     owner: user.uid,
 
   }).then(function(docRef){
 
-    matchFromLibrary(title);
+    matchFromLibrary(titleL);
     //Saved successfuly, so hide the modal.
     $('#addModal').modal('hide')
 
@@ -37,18 +38,18 @@ function addToLibrary(){
 function addToWishlist(){
 
   //Input values.
-  var title = document.getElementById('titlew').value, author = document.getElementById('authorw').value;
+  var titlew = document.getElementById('titlew').value, author = document.getElementById('authorw').value;
 
   //Get current user and save data to Firestore.
   var user = firebase.auth().currentUser;
-  db.doc('/wishlist/' + title).set({
-    title: title,
+  db.doc('/wishlist/' + titlew).set({
+    title: titlew,
     author: author,
     requester: user.uid,
 
   }).then(function(docRef){
 
-    matchFromWishlist(title);
+    matchFromWishlist(titlew);
     //Saved successfuly, so hide the modal.
     $('#addModal').modal('hide')
 
@@ -61,6 +62,7 @@ function addToWishlist(){
 
 /* READ DATA FROM FIRESTORE*/
 
+//Fetch books the user has added to his wishlist/library
 firebase.auth().onAuthStateChanged(function(user){
   if (user){
     fetchLibrary();
@@ -102,18 +104,30 @@ function fetchWishlist(){
 
 /* PERFORM DATA QUERIES */
 
-function matchFromLibrary(title){
-  db.collection('/wishlist').where('title', '==', title).onSnapshot(function(querySnapshot){
-    showNotification('Someone wants to read ' + title);
+//Look if the recently added library book matches something in the wishlist collection
+function matchFromLibrary(titleL){
+  db.collection('/wishlist').where('title', '==', titleL)
+  .get()
+  .then(function(querySnapshot){
+    querySnapshot.forEach(function(doc){
+      showNotification('And.. match! Some user wants to read ' + titleL);
+    })
   });
 }
 
-function matchFromWishlist(title){
-  db.collection('/library').where('title', '==', title).onSnapshot(function(querySnapshot){
-    showNotification('We found someone who has ' + title);
+//Look if the recently added wishlist book matches something in the library collection
+function matchFromWishlist(titlew){
+  db.collection('/library').where('title', '==', titlew)
+  .get()
+  .then(function(querySnapshot){
+    querySnapshot.forEach(function(doc){
+      showNotification('New match! Some user has ' + titlew);
+    })
   });
 }
 
+
+//Ask to show push notifications to the user
 function showNotification(message){
 
   if (Notification.permission === 'granted'){
