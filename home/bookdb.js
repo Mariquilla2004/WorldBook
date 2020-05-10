@@ -29,6 +29,7 @@ function addToLibrary(){
     $('#addModal').modal('hide')
 
   }).catch(function(error){
+
     //An error happened.
     console.log(error);
   });
@@ -111,6 +112,7 @@ function matchFromLibrary(titleL){
   .then(function(querySnapshot){
     querySnapshot.forEach(function(doc){
       showNotification('And.. match! Some user wants to read ' + titleL);
+      alert('We found a match but you don\'t let us display notifications ' + titleL)
     })
   });
 }
@@ -122,6 +124,7 @@ function matchFromWishlist(titlew){
   .then(function(querySnapshot){
     querySnapshot.forEach(function(doc){
       showNotification('New match! Some user has ' + titlew);
+      alert('We found a match but you don\'t let us display notifications ' + titlew)
     })
   });
 }
