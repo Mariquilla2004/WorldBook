@@ -112,7 +112,7 @@ function matchFromLibrary(titleL){
   .then(function(querySnapshot){
     querySnapshot.forEach(function(doc){
       showNotification('And.. match! Some user wants to read ' + titleL);
-      alert('We found a match but you don\'t let us display notifications ' + titleL)
+
     })
   });
 }
@@ -124,7 +124,7 @@ function matchFromWishlist(titlew){
   .then(function(querySnapshot){
     querySnapshot.forEach(function(doc){
       showNotification('New match! Some user has ' + titlew);
-      alert('We found a match but you don\'t let us display notifications ' + titlew)
+
     })
   });
 }
@@ -133,19 +133,8 @@ function matchFromWishlist(titlew){
 //Ask to show push notifications to the user
 function showNotification(message){
 
-  if (Notification.permission === 'granted'){
+  Notification.requestPermission(function() {
+    var notification = new Notification('WorldBook', { body : message });
+  });
 
-  var notification = new Notification(message);
-  }
-
-  else if (Notification.permission !== "denied") {
-
-    Notification.requestPermission().then(function (permission) {
-      // If the user accepts, let's create a notification
-      if (permission === "granted") {
-
-        var notification = new Notification(message);
-      }
-    });
-  }
 }
