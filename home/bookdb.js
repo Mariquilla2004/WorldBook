@@ -20,13 +20,24 @@ function addToLibrary(){
     title: titleL,
     author: author,
     isbn: isbn,
-    owner: user.uid,
+    owner: user.displayName,
 
   }).then(function(docRef){
 
-    matchFromLibrary(titleL);
     //Saved successfuly, so hide the modal.
     $('#addModal').modal('hide')
+
+    //Read the wishlist collection and find common books.
+    var addedBook = [titleL, ''];
+    let wishbooks = [];
+    db.collection('/wishlist/').get().then(function(querySnapshot){
+      querySnapshot.forEach(function(doc){
+        wishbooks.push(doc.data().title);
+
+        findCommonBook(addedBook, wishbooks, '/wishlist/');
+      });
+    }).catch(function(error){console.log(error);});
+
 
   }).catch(function(error){
 
@@ -46,13 +57,23 @@ function addToWishlist(){
   db.doc('/wishlist/' + titlew).set({
     title: titlew,
     author: author,
-    requester: user.uid,
+    requester: user.displayName,
 
   }).then(function(docRef){
 
-    matchFromWishlist(titlew);
     //Saved successfuly, so hide the modal.
-    $('#addModal').modal('hide')
+    $('#wishlistModal').modal('hide')
+
+        //Read the wishlist collection and find common books.
+    var addedBook = [titlew, ''];
+    let libbooks = [];
+    db.collection('/library/').get().then(function(querySnapshot){
+      querySnapshot.forEach(function(doc){
+        libbooks.push(doc.data().title);
+
+        findCommonBook(addedBook, libbooks, '/library/');
+      });
+    }).catch(function(error){console.log(error);});
 
   }).catch(function(error){
     //An error happened.
@@ -62,13 +83,14 @@ function addToWishlist(){
 
 
 /* READ DATA FROM FIRESTORE*/
-
-//Fetch books the user has added to his wishlist/library
-firebase.auth().onAuthStateChanged(function(user){
+firebase.auth().onAuthStateChanged(function(user) {
   if (user){
-    fetchLibrary();
-    fetchWishlist();
-  }
+
+    //Fetch books the user has added to his wishlist/library.
+      fetchLibrary();
+      fetchWishlist();
+
+  } else { window.location = '/auth/logIn/';}
 });
 
 function fetchLibrary(){
@@ -77,7 +99,7 @@ function fetchLibrary(){
   var user = firebase.auth().currentUser;
   var collectionRef = db.collection('/library');
   //Fetch user's library from Firestore.
-  collectionRef.where('owner', '==', user.uid).onSnapshot(function(querySnapshot){
+  collectionRef.where('owner', '==', user.displayName).onSnapshot(function(querySnapshot){
     libraryCardContainer.innerHTML = '';
 
     //Display all books added to user's library.
@@ -93,7 +115,7 @@ function fetchWishlist(){
   var user = firebase.auth().currentUser;
   var collectionRef = db.collection('/wishlist');
   //Fetch user's library from Firestore.
-  collectionRef.where('requester', '==', user.uid).onSnapshot(function(querySnapshot){
+  collectionRef.where('requester', '==', user.displayName).onSnapshot(function(querySnapshot){
     wishlistCardContainer.innerHTML = '';
 
     //Display all books added to user's library.
@@ -105,29 +127,43 @@ function fetchWishlist(){
 
 /* PERFORM DATA QUERIES */
 
-//Look if the recently added library book matches something in the wishlist collection
-function matchFromLibrary(titleL){
-  db.collection('/wishlist').where('title', '==', titleL)
-  .get()
-  .then(function(querySnapshot){
-    querySnapshot.forEach(function(doc){
-      showNotification('And.. match! Some user wants to read ' + titleL);
 
-    })
-  });
-}
+//Look if the recently added library book matches something in the wishlist collection
+    db.collection('/wishlist').onSnapshot(function(snapshot){
+      var wishBooksL= [];
+      //Get each book in the wishlist collection and push them to an array.
+      snapshot.docChanges().forEach(function(change){
+        if (change.type === 'added' || change.type === 'modified'){
+          wishBooksL.push(change.doc.data().title);
+        }
+      });
+      console.log(wishBooksL);
+      //Get books in user's library.
+      var lNodeList = document.getElementById("libraryCardContainer").querySelectorAll(".bookCard");
+      libBooksL = Array.prototype.slice.call(lNodeList).map(function(e) {
+      return e.textContent;});
+
+      findCommonBook(libBooksL, wishBooksL, '/wishlist/');
+    });
+
 
 //Look if the recently added wishlist book matches something in the library collection
-function matchFromWishlist(titlew){
-  db.collection('/library').where('title', '==', titlew)
-  .get()
-  .then(function(querySnapshot){
-    querySnapshot.forEach(function(doc){
-      showNotification('New match! Some user has ' + titlew);
+  db.collection('/library').onSnapshot(function(snapshot){
+    var libBooksW = [];
+    //Get each book in the library collection and push them to an array.
+    snapshot.docChanges().forEach(function(change){
+      if (change.type === 'added' || change.type === 'modified'){
+        libBooksW.push(change.doc.data().title);
+      }
+    });
+    console.log(libBooksW);
+    //Get books in user's wishlist.
+    var wNodeList = document.getElementById("wishlistCardContainer").querySelectorAll(".bookCard");
+    var wishBooksW = Array.prototype.slice.call(wNodeList).map(function(e) {
+    return e.textContent;});
 
-    })
+    findCommonBook(wishBooksW, libBooksW, '/library/');
   });
-}
 
 
 //Ask to show push notifications to the user
@@ -137,4 +173,27 @@ function showNotification(message){
     var notification = new Notification('WorldBook', { body : message });
   });
 
+}
+
+function findCommonBook(array1, array2, path) {
+  //Loop through the two arrays.
+  for(let i = 0; i < array1.length; i++) {
+    for(let j = 0; j < array2.length; j++) {
+      if(array1[i] === array2[j]) {
+          // Return if common element found
+          db.doc(path + array2[j]).get().then(function(doc){
+
+            if (doc.exists && path === '/wishlist/'){
+              showNotification('Hey! ' + doc.data().requester + ' wants to read ' + array1[i] + '!');
+
+            } else if (doc.exists && path === '/library/'){
+              showNotification('Lucky! ' + doc.data().owner + '\'s got ' + array1[i] + '!');
+            }
+
+          });
+        }
+      }
+  }
+  // Return if no common element exist
+  return false;
 }

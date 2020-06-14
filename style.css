@@ -30,6 +30,11 @@
   font-family: 'Open Sans' !important;
   font-weight: 400;
 }
+
+.openSans600{
+  font-family: 'Open Sans' !important;
+  font-weight: 600;
+}
 .poppins{
   font-family: 'Poppins' !important;
 }
@@ -112,7 +117,7 @@ h1,h2,h3,h4,h5,h6{
       #mainNav.navbar-shrink {
         padding-top: 0;
         padding-bottom: 0;
-        background-color: rgba(14, 84, 127);
+        background-color: #325396;
       }
       #mainNav.navbar-shrink .navbar-brand {
         font-size: 1.25em;
@@ -133,8 +138,8 @@ h1,h2,h3,h4,h5,h6{
 }
 .callout{
     padding:15rem 0;
-    background:-webkit-gradient(linear,left top,right top,from(rgba(255,255,255,.1)),to(rgba(255,255,255,.1))),url(media/kids.jpeg);
-    background:linear-gradient(90deg,rgba(255,255,255,.1) 0,rgba(255,255,255,.1) 100%),url(media/kids.jpeg);
+    background:-webkit-gradient(linear,left top,right top,from(rgba(255,255,255,.1)),to(rgba(255,255,255,.1))),url(media/blue-book.jpg);
+    background:linear-gradient(90deg,rgba(255,255,255,.1) 0,rgba(255,255,255,.1) 100%),url(media/blue-book.jpg);
     background-position:center center;
     background-repeat:no-repeat;
     background-size:cover
@@ -291,9 +296,19 @@ h1,h2,h3,h4,h5,h6{
         border: 2px solid #40ABF3;
 }
 
+/* "How does it work?" list */
+ul, li{
+  background-color: inherit !important;
+}
+
+
+#atYourService{
+  background-color: #FAF8F5;
+}
+
 #portfolio {
 
-        background-color: #E6E6E6;
+        background-color:#f5f4ed;
 }
 
 
@@ -302,7 +317,7 @@ h1,h2,h3,h4,h5,h6{
 }
 .team-member img{width:225px;
     height:225px;
-    border:7px solid rgba(0,0,0,.1)
+    border:7px solid rgba(63,171,243,.2)
 }
 .team-member h4{margin-top:25px;
     margin-bottom:0;
@@ -311,6 +326,7 @@ h1,h2,h3,h4,h5,h6{
 .team-member p{
     margin-top:0
 }
+
 
 #contact {
     background: #f7f7f7;
@@ -391,13 +407,13 @@ h1,h2,h3,h4,h5,h6{
     background: #40ABF3;
   }
 
-  #footer {
-    background: rgba(14, 84, 127);
+  #footer {class= 'list-group-item'
+    background: #325396;
     padding: 30px 0;
     color: #fff;
     font-size: 14px;
   }
-
+  #footer{ background-color: #325396; }
   #footer .copyright {
     text-align: center;
   }
@@ -410,7 +426,7 @@ h1,h2,h3,h4,h5,h6{
   }
 
   #services{
-      background-color: #E6E6E6;
+      background-color: #f5f4ed;
 
   }
 .alert {

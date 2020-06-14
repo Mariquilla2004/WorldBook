@@ -65,14 +65,14 @@
           <li class="nav-item">
             <a class="nav-link js-scroll-trigger" href="#contact">Contact</a>
           </li>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <li class="nav-item">
-                <a class="btn btn-primary btn-lg" href="auth/logIn/index.html" role="button">Login</a>
-              </li>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <li class="nav-item">
-              <a class="btn btn-primary btn-lg" href="auth/signUp/index.html" role="button">Sign Up</a>
-            </li>
+          <div class='btn-toolbar' role= 'toolbar'>
+            <div class=" btn-group mr-2">
+                <button class="btn btn-primary" onclick="window.location= 'auth/logIn/index.html'">Login</button>
+              </div>
+          <div class=" btn-group mr-2 ">
+              <button class="btn btn-primary" onclick="window.location= 'auth/signUp/index.html'" type="button">Sign Up</button>
+            </div>
+          </div>
 
         </ul>
       </div>
@@ -90,32 +90,22 @@
 
   <!-- INTRO -->
   <div class= 'space4'></div>
-  <div class="container" id="about">
+  <div id= 'about'></div>
+  <div class="container">
     <!-- Portfolio Item Row -->
     <div class="row">
-
-      <div class="col-md-4">
+      <div class="col-md-5 pt-5">
+        <h1 class="poppins">The biggest <span style='color:#40abf3'>library</span> in the <span style='color:#40abf3'>world</span>.</h1>
         <br>
-        <br>
-        <h1 class="my-4 openSans400"><span style="color:#40ABF3;">WorldBook</span> is the first <span style="color:#40ABF3;">platform </span> for sharing books in the <span style="color:#40ABF3;">world!</span>
-        </h1>
-        <h3 class="my-3 openSans"  style= 'margin-right: 30px'>Connecting people with books</h3>
-        <p>More than easy to use, it's the first platform where books have a second life and where you will discover new worlds and stories.</p>
-
-
+        <hr class= 'my-4'>
+        <h5 class="openSans pt-4" style="line-height: 1.6;">Yep, you heard right. With no <span style="color:#40ABF3;">buildings</span>, the WorldBook Library is fully managed by you, our <span style="color:#40ABF3;">users.</span></h5>
       </div>
-
-      <div class="col-md-8">
-        <br>
-        <br>
-
+      <div class="col-md-7">
         <img class="img-fluid" src="media/socialmedia.jpg" alt="">
       </div>
-
-
     </div>
+    <div class= 'space4'></div>
   </div>
-    <div class= 'space6'></div>
   </div>
   <!-- /.row -->
 
@@ -125,68 +115,72 @@
     <div class="container" id="work">
       <!-- Portfolio Item Heading -->
       <div class= 'space4'></div>
-      <h1 class="my-4 openSans400">Our<span style="color:#40ABF3;"> work</span>
-      </h1>
       <!-- Portfolio Item Row -->
       <div class="row">
 
-        <div class="col-md-8">
-          <img class="img-fluid" src="media/book4.jpg" alt="">
+        <div class="col-md-7">
+          <img class="img-fluid" src="media/readers-this-is-for-you.jpg" alt="">
         </div>
 
-        <div class="col-md-4">
-          <h3 class="my-3 poppins">Readers this is for you!</h3>
-          <p>We know you LOVE reading, that's why we created WorldBook. The platform is ready to connect you with new books and stories that you would never have paid for.</p>
-          <h3 class="my-3 poppins">How does it work?</h3>
-          <ul class= 'poppins'>
-            <li>Pick a book.</li>
-            <li>Put it in your virtual library.</li>
-            <li>Share your books.</li>
-            <li>Search for other books near you.</li>
-            <li>Find them and go for them.</li>
-            <li>Talk with other people via forums about your favourite stories.</li>
-          </ul>
+        <div class="col-md-5 pl-4 pt-3">
+          <h1 class="my-3 poppins">Readers, this is for <span style="color:#40abf3;">you.</span></h1>
+          <br>
+          <hr class= 'my-4'>
+          <h5 class= 'openSans pt-4'>For those who love reading as much as we do. WorldBook can't wait to connect you with your favourite books, and in the process, with the best people you'll ever meet!</h5>
+          <br>
         </div>
+      </div>
+      <div class= 'container p-5'></div>
+      <div class= 'container text-center'>
+
+          <h1 class="mb-5 poppins"><span style="color:#40ABF3;">Okay</span>, but how does it work?</h1>
+          <ul class= 'mr-5 list-group list-group-flush text-left openSans'>
+            <li class= 'list-group-item'><h5>Pick a book.</h5></li>
+            <li class= 'list-group-item'><h5>Add it to your WorldBook library.</h5></li>
+            <li class= 'list-group-item'><h5>Share your books on the biggest self-managed library in the world.</h5></li>
+            <li class= 'list-group-item' ><h5>We'll notify you when there are books near you!</h5></li>
+            <li class= 'list-group-item'><h5>Talk to their owners, and they will lend it to you for free!</h5></li>
+            <li class= 'list-group-item'><h5>Discuss your favourite books in public forums all over the world.</h5></li>
+          </ul>
 
       </div>
     </div>
 
-    <!-- /.row -->
-    <br>
-    <br>
+    <div class= 'container p-5'></div>
     <!--Servicios-->
-
-
+  </section>
+  <section id= 'atYourService'>
+    <div class= 'space4'></div>
     <div class="container">
-      <h1 class="text-center mt-0 openSans400">At Your Service</h1>
+      <h1 class="text-center mt-0 poppins">At Your Service</h1>
       <hr class="divider my-4">
       <div class="row">
         <div class="col-lg-3 col-md-6 text-center">
           <div class="mt-5">
-            <i class="fas fa-4x fa-gem text-primary mb-4"></i>
-            <h3 class="h4 mb-2 poppins">Radiates Desire To Read</h3>
-            <p class="text-muted mb-0 openSans">Clear, pretty design for you so you don't waste time.</p>
+            <i class="fas fa-4x fa-book-open mb-4"style="color: #00b159;" ></i>
+            <h3 class="h4 mb-2 poppins">For readers, by readers</h3>
+            <p class="text-muted mb-0 openSans">WorldBook is an open <span style="color: #40ABF3;">comunity</span>, in which <span style="color: #40ABF3;">we</span> also participate!</p>
           </div>
         </div>
         <div class="col-lg-3 col-md-6 text-center">
           <div class="mt-5">
-            <i class="fas fa-4x fa-laptop-code text-primary mb-4"></i>
-            <h3 class="h4 mb-2 poppins">Coded for readers</h3>
-            <p class="text-muted mb-0 openSans">We created WorldBook for you, for us, for readers.</p>
+            <i class="fas fa-4x fa-shapes mb-4"style="color:#ffc425;" ></i>
+            <h3 class="h4 mb-2 poppins">Especially designed for you</h3>
+            <p class="text-muted mb-0 openSans">WorldBook's design was <span style="color: #40ABF3;">optimized</span> to give you the <span style="color: #40ABF3;">best</span> experience.</p>
           </div>
         </div>
         <div class="col-lg-3 col-md-6 text-center">
           <div class="mt-5">
-            <i class="fas fa-4x fa-globe text-primary mb-4"></i>
-            <h3 class="h4 mb-2 poppins">Connecting readers</h3>
-            <p class="text-muted mb-0 openSans">Being part of this community allows you to meet new readers!</p>
+            <i class="fas fa-4x fa-globe-europe mb-4" style="color: #40ABF3;"></i>
+            <h3 class="h4 mb-2 poppins">Connecting people</h3>
+            <p class="text-muted mb-0 openSans">At WorldBook, you'll meet <span style="color: #40ABF3;">awesome</span> people with awesome <span style="color: #40ABF3;">books</span>.</p>
           </div>
         </div>
         <div class="col-lg-3 col-md-6 text-center">
           <div class="mt-5">
-            <i class="fas fa-4x fa-heart text-primary mb-4"></i>
+            <i class="fas fa-4x fa-heart text-danger mb-4"></i>
             <h3 class="h4 mb-2 poppins">Made with Love</h3>
-            <p class="text-muted mb-0 openSans">Love is our greatest weapon, the WorldBook community our target!</p>
+            <p class="text-muted mb-0 openSans">Love is our greatest <span style="color: #40ABF3;">weapon</span>, the WorldBook community our <span style="color: #40ABF3;">target</span>!</p>
             <br>
             <br>
             <br>
@@ -195,6 +189,7 @@
         </div>
       </div>
     </div>
+    <div class= 'p-5'></div>
   </section>
 
 
@@ -202,15 +197,14 @@
   <!-- Callout -->
   <section class="callout">
     <div class="container text-center">
-      <h1 class="mx-auto mb-5 openSans400"><span style="color:#40ABF3;">Wanna be part of it?
-          <em>Join</em>
-          us!</h1></span>
-      <a class="btn btn-primary btn-lg" href="auth/signUp/index.html">Sign Up!</a>&nbsp;&nbsp;
-      <a class="btn btn-primary btn-lg" href="auth/logIn/index.html">Login!</a>
+      <h1 class="mx-auto mb-5 openSans600"><span style="color:#ffff;">Wanna be part of it?</span></h1>
+      <a class="btn btn-primary btn-lg" href="auth/signUp/index.html">Sign Up</a>&nbsp;&nbsp;
+      <a class="btn btn-primary btn-lg" href="auth/logIn/index.html">Login</a>
     </div>
   </section>
 
   <section class="bg-light page-section" id="team">
+    <div class= 'pt-3'></div>
     <div class="container">
       <div class="row">
         <br>
@@ -221,9 +215,8 @@
           <br>
           <br>
           <br>
-
-          <h1 class="my-4 openSans400">Our <span style="color:#40ABF3;">Amazing</span> Team</h1>
-          <h3 class="section-subheading text-muted openSans">Just 2 crazy people with a huge 💡.</h3>
+          <br>
+          <h1 class=" my-4 poppins">Our <span style="color:#40ABF3;">Amazing</span> Team</h1>
           <br>
           <br>
         </div>
@@ -263,7 +256,7 @@
                 <a href="https://www.facebook.com/alvaro.demiguel.1420" class="fa fa-facebook"></a>
               </li>
               <li class="list-inline-item">
-                <a href="https://twitter.com/alvarusky3" class="fa fa-twitter"></a>
+                <a href="https://twitter.com/_alvarodemiguel" class="fa fa-twitter"></a>
               </li>
               <li class="list-inline-item">
                 <a href="https://www.instagram.com/alvarodemiguel3" class="fa fa-instagram"></a>
@@ -273,11 +266,8 @@
         </div>
 
       </div>
-      <div class="row">
-        <div class="col-lg-8 mx-auto text-center">
-          <p class="large text-muted openSans">Two friends from Sevilla with big dreams and the tools to make them real.</p>
-      </div>
     </div>
+    <div class= 'space4'></div>
   </section>
 
   <!-- /.container -->
@@ -288,9 +278,9 @@
     <div class="container">
       <div class="content-section-heading text-center">
         <h3 class="text-secondary mb-0 openSans">Gallery</h3>
-        <h2 class="mb-5 openSans400">Photos From Our Readers</h2>
+        <h2 class="mb-5 poppins">Photos From Our <span style="color:#40ABF3;">Readers</span></h2>
       </div>
-      <div class="row no-gutters">
+          <div class="row no-gutters">
         <div class="col-lg-6">
           <a class="portfolio-item">
             <span class="caption">
@@ -307,7 +297,7 @@
             <span class="caption">
               <span class="caption-content">
                 <h2 class="poppins">Books</h2>
-                <p class="mb-0 openSans">A bunch of work, I need much more time for reading!</p>
+                <p class="mb-0 openSans">Too much work, I need a lot more time to read!</p>
               </span>
             </span>
             <img class="img-fluid" src="media/IMG_2733.jpg" alt="">
@@ -329,14 +319,14 @@
             <span class="caption">
               <span class="caption-content">
                 <h2 class="poppins">Babysitting</h2>
-                <p class="mb-0 openSans">I gotta look after my syblings, but I wanna read, so what I do is read with them</p>
+                <p class="mb-0 openSans">Wondering the best way to look after your syblings? It's story time!</p>
               </span>
             </span>
             <img class="img-fluid" src="media/niños5.jpeg">
           </a>
         </div>
-      </div>
     </div>
+  </div>
     <br>
     <br>
   </section>
@@ -345,8 +335,8 @@
   <section id="contact">
     <div class="container wow fadeInUp">
       <div class="section-header">
-        <h3 class="section-title openSans400">Contact</h3>
-        <p class="section-description openSans">Wanna tell us something wonderful? Contact us.</p>
+        <h1 class="section-title poppins">Contact <span style="color: #40ABF3;">Us</span></h1>
+        <p class="section-description openSans">Got a problem? We got you covered.</p>
       </div>
     </div>
 

@@ -17,7 +17,7 @@
   <!-- Custom styles for this template-->
   <link href="css/sb-admin-2.css" rel="stylesheet">
   <link href= '../home/css/sb-admin-2.css' rel= 'stylesheet'>
-  
+
   <style>
     #imageUpload
 {
@@ -96,6 +96,18 @@ height: 150px;
 
       <!-- Nav Item - Pages Collapse Menu -->
       <li class="nav-item">
+        <a class="nav-link collapsed" href="friders.html">
+          <i class="fas fa-grin-stars"></i>
+          <span>Friders</span>
+        </a>
+      </li>
+
+      <!-- Divider -->
+      <hr class="sidebar-divider">
+
+
+      <!-- Nav Item - Pages Collapse Menu -->
+      <li class="nav-item">
         <a class="nav-link collapsed" href="forums.html">
           <i class="fas fa-users"></i>
           <span>Forums</span>
@@ -120,17 +132,6 @@ height: 150px;
             <a class="collapse-item" href="#">New story</a>
           </div>
         </div>
-      </li>
-
-      <!-- Divider -->
-      <hr class="sidebar-divider">
-
-      <!-- Nav Item - Pages Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="friders.html">
-          <i class="fas fa-grin-stars"></i>
-          <span>Friders</span>
-        </a>
       </li>
 
       <!-- Divider -->
@@ -303,14 +304,14 @@ height: 150px;
           <div class="row">
                   <h1 class="h1 mb-12 text-gray-800"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;My Profile</h1>
                   <br><br><br><br><br>
-              
-              
+
+
           </div>
           <div class="row">
             <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 <div class="container">
 <div class="row flex-lg-nowrap">
-  
+
 
   <div class="col">
     <div class="row">
@@ -329,19 +330,19 @@ height: 150px;
                           $("#profileImage").click(function(e) {
                       $("#imageUpload").click();
                   });
-                  
+
                   function fasterPreview( uploader ) {
                       if ( uploader.files && uploader.files[0] ){
-                            $('#profileImage').attr('src', 
+                            $('#profileImage').attr('src',
                                window.URL.createObjectURL(uploader.files[0]) );
                       }
                   }
-                  
+
                   $("#imageUpload").change(function(){
                       fasterPreview( this );
                   });
                       </script>
-                  
+
                   <div class="as-console-wrapper"><div class="as-console"></div></div>
 
                 </div>
@@ -352,7 +353,7 @@ height: 150px;
                   </div>
                 </div>
               </div>
-              
+
               <div class="tab-content pt-3">
                 <div class="tab-pane active">
                   <form class="form" novalidate="">
@@ -432,31 +433,31 @@ height: 150px;
         </div>
       </div>
 
-      
+
     </div>
 
   </div>
 </div>
 </div>
-            
-           
-    
+
+
+
 
 
           </div>
-          
+
           <div class="row">
-              
-            
+
+
           <br><br><br><br>
 
           <div class="row">
-            
-            
-          </div>
-              
 
-                  
+
+          </div>
+
+
+
 
         </div>
 
@@ -505,7 +506,7 @@ height: 150px;
   </div>
 
 
- 
+
 
   <!-- Bootstrap core JavaScript-->
   <script src="vendor/jquery/jquery.js"></script>
@@ -517,10 +518,10 @@ height: 150px;
   <!-- Firebase project SDKs -->
   <script src="https://www.gstatic.com/firebasejs/6.3.4/firebase-app.js"></script>
 
-  <script src="https://www.gstatic.com/firebasejs/6.0.4/firebase-database.js"></script> 
+  <script src="https://www.gstatic.com/firebasejs/6.0.4/firebase-database.js"></script>
   <script src= 'libraryFirebase.js'></script>
   <script src= '/firebaseConf.js'></script>
-  
+
 
 
   <script src="https://www.gstatic.com/firebasejs/6.3.0/firebase-auth.js"></script>
@@ -528,17 +529,17 @@ height: 150px;
    <script src= '/firebaseConf.js'></script>
   <script src= 'booksFirebase.js'></script>
 
-  <script src="https://www.gstatic.com/firebasejs/6.0.4/firebase-database.js"></script> 
+  <script src="https://www.gstatic.com/firebasejs/6.0.4/firebase-database.js"></script>
   <script src= 'libraryFirebase.js'></script>
   <script src= '/firebaseConf.js'></script>
-  
+
 
 
   <!-- Custom scripts for all pages-->
   <script src="js/sb-admin-2.js"></script>
   <script src= 'home.js'></script>
   <script src= 'profile.js'></script>
-  
+
 
 </body>
 
