@@ -11,8 +11,16 @@
 
   <title>WorldBook | Home</title>
 
-  <!-- Custom fonts for this template-->
-  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <!-- Custom fonts, js and css for this template-->
+    <script src="https://kit.fontawesome.com/6838ece04b.js" crossorigin="anonymous"></script>
+    <script
+  src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+  integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs="
+  crossorigin="anonymous"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 
   <!-- Custom styles for this template-->
   <link href="css/sb-admin-2.css" rel="stylesheet">
@@ -57,7 +65,7 @@
 
       <!-- Nav Item - Dashboard -->
       <li class="nav-item">
-        <a class="nav-link" href="index.html">
+        <a class="nav-link" href="#">
           <i class="fas fa-book"></i>
           <span>My Bookshelf</span></a>
       </li>
@@ -67,7 +75,7 @@
 
       <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-        <a class="nav-link collapsed" href="friders.html">
+        <a class="nav-link collapsed" href="#">
           <i class="fas fa-grin-stars"></i>
           <span>Friders</span>
         </a>
@@ -78,7 +86,7 @@
 
       <!-- Nav Item - Pages Collapse Menu -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="forums.html">
+        <a class="nav-link collapsed" href="#">
           <i class="fas fa-users"></i>
           <span>Forums</span>
         </a>
@@ -406,11 +414,10 @@
     </div>
 
   <!-- Bootstrap core JavaScript-->
-  <script src="vendor/jquery/jquery.js"></script>
-  <script src="vendor/bootstrap/js/bootstrap.bundle.js"></script>
-
-  <!-- Core plugin JavaScript-->
-  <script src="vendor/jquery-easing/jquery.easing.js"></script>
+<script
+  src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"
+  integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E="
+  crossorigin="anonymous"></script>
 
   <!-- Firebase project SDKs -->
   <script src="https://www.gstatic.com/firebasejs/6.3.4/firebase-app.js"></script>
@@ -422,7 +429,31 @@
 
   <!-- Custom scripts for all pages-->
   <script src= 'bookdb.js'></script>
-  <script src="js/home2.js"></script>
+  <script>
+    !function(t){
+    "use strict";t("#sidebarToggle, #sidebarToggleTop")
+    .on("click",function(o){t("body")
+    .toggleClass("sidebar-toggled"),
+    t(".sidebar")
+    .toggleClass("toggled"),t(".sidebar")
+    .hasClass("toggled")&&t(".sidebar .collapse")
+    .collapse("hide")}),
+    t(window)
+    .resize(function(){
+        t(window).width()<768&&t(".sidebar .collapse")
+        .collapse("hide")}),t("body.fixed-nav .sidebar")
+        .on("mousewheel DOMMouseScroll wheel",function(o){
+            if(768<t(window).width()){
+                var e=o.originalEvent,l=e.wheelDelta||-e.detail;this.scrollTop+=30*(l<0?1:-1),o.preventDefault()}})
+                ,t(document)
+                .on("scroll",function(){
+                    100<t(this).scrollTop()?t(".scroll-to-top").fadeIn():t(".scroll-to-top").fadeOut()})
+                    ,t(document).on("click","a.scroll-to-top",function(o){
+                        var e=t(this);t("html, body").stop().animate({
+                            scrollTop:t(e.attr("href")).offset().top},1e3,"easeInOutExpo"),o.preventDefault()})}
+
+    (jQuery);
+  </script>
   <script src= 'home.js'></script>
 
 
