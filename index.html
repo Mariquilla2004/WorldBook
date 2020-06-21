@@ -5,35 +5,34 @@
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
+  <meta name="description" content="WorldBook is the biggest library in the world. Sign Up to read your favourite books completely free.">
+  <meta name="author" content="WorldBook">
 
   <title>WorldBook</title>
 
 
   <!-- Bootstrap Core CSS -->
-  <link href="vendor/bootstrap/css/bootstrap.css" rel="stylesheet">
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+  <!-- Custom Fonts
+  <link href="vendor/fontawesome-free/css/all.css" rel="stylesheet" type="text/css"> -->
 
-  <!-- Custom Fonts -->
-  <link href="vendor/fontawesome-free/css/all.css" rel="stylesheet" type="text/css">
+  <script src="https://kit.fontawesome.com/6838ece04b.js" crossorigin="anonymous"></script>
+
   <!--<link href="vendor/simple-line-icons/css/simple-line-icons.css" rel="stylesheet">-->
-  <link href="https://fonts.googleapis.com/css?family=Poppins:500|Indie+Flower|Libre+Baskerville|Lobster|Lora|Merriweather|PT+Serif|Pacifico|Open+Sans:300,300i,400,400i,700,700i&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:500,|Indie+Flower|Open+Sans:300,300i,400,400i,700,700i&display=swap" rel="stylesheet">
+
 
   <!-- Custom CSS -->
   <link href="style.css" rel="stylesheet">
 
-  <!--Bootstrap-->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-    crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-    crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-    crossorigin="anonymous"></script>
+    <script
+  src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+  integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs="
+  crossorigin="anonymous"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
 </head>
 
 
@@ -66,7 +65,7 @@
             <a class="nav-link js-scroll-trigger" href="#contact">Contact</a>
           </li>
           <div class='btn-toolbar' role= 'toolbar'>
-            <div class=" btn-group mr-2">
+            <div class=" btn-group mr-2 openSans">
                 <button class="btn btn-primary" onclick="window.location= 'auth/logIn/index.html'">Login</button>
               </div>
           <div class=" btn-group mr-2 ">
@@ -198,8 +197,8 @@
   <section class="callout">
     <div class="container text-center">
       <h1 class="mx-auto mb-5 openSans600"><span style="color:#ffff;">Wanna be part of it?</span></h1>
-      <a class="btn btn-primary btn-lg" href="auth/signUp/index.html">Sign Up</a>&nbsp;&nbsp;
-      <a class="btn btn-primary btn-lg" href="auth/logIn/index.html">Login</a>
+      <a class="btn btn-primary btn-lg openSans400" href="auth/signUp/index.html">Sign Up</a>&nbsp;&nbsp;
+      <a class="btn btn-primary btn-lg openSans400" href="auth/logIn/index.html">Login</a>
     </div>
   </section>
 
@@ -347,7 +346,7 @@
 
           <div class="info">
             <div>
-              <i class="fa fa-map-marker"></i>
+              <i class="fas fa-map-marker-alt"></i>
               <p class="poppins">Virgen de Luján<br>Sevilla, 41011</p>
             </div>
 
@@ -379,7 +378,7 @@
             <div id="errormessage"></div>
 
 
-            <form role="form" class="contactForm" id="contactForm1" action="https://formsubmit.io/send/<admin@worldbook.es>"  method="POST" >
+            <form role="form" class="contactForm openSans400" id="contactForm1" action="https://formsubmit.io/send/admin@worldbook.es"  method="POST" >
               <div class="form-group">
                 <input type="text" name="name" class="form-control" id="name" placeholder="Your Name"
                   data-rule="minlen:4" data-msg="Please enter at least 4 chars" required/>
@@ -426,7 +425,7 @@
     </div>
   </div>
 
-  <div class="container">
+  <div class="container openSans400">
     <div class="copyright">
       &copy; Copyright <strong>WorldBook</strong>. All Rights Reserved
     </div>
@@ -438,22 +437,59 @@
 <!-- #footer -->
 
 
-  <!-- Bootstrap core JavaScript -->
-  <script src="vendor/jquery/jquery.js"></script>
-  <script src="vendor/bootstrap/js/bootstrap.bundle.js"></script>
-
-  <!-- Plugin JavaScript -->
-  <script src="vendor/jquery-easing/jquery.easing.js"></script>
-
+<script
+  src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+  integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+  crossorigin="anonymous"></script>
   <!-- Custom scripts for this template -->
   <script src="main.js"></script>
 
-  <!-- Bootstrap core JavaScript -->
-  <script src="nav/vendor/jquery.js"></script>
-  <script src="nav/vendor/bootstrap.bundle.js"></script>
+  <!-- Nav scripts for animation -->
+  <script>
+    (function($) {
+  "use strict"; // Start of use strict
 
-  <!-- Custom scripts for this template -->
-  <script src="nav/js/nav.js"></script>
+  // Smooth scrolling using jQuery easing
+  $('a.js-scroll-trigger[href*="#"]:not([href="#"])').click(function() {
+    if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
+      var target = $(this.hash);
+      target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+      if (target.length) {
+        $('html, body').animate({
+          scrollTop: (target.offset().top - 54)
+        }, 1000, "easeInOutExpo");
+        return false;
+      }
+    }
+  });
+
+  // Closes responsive menu when a scroll trigger link is clicked
+  $('.js-scroll-trigger').click(function() {
+    $('.navbar-collapse').collapse('hide');
+  });
+
+  // Activate scrollspy to add active class to navbar items on scroll
+  $('body').scrollspy({
+    target: '#mainNav',
+    offset: 56
+  });
+
+  // Collapse Navbar
+  var navbarCollapse = function() {
+    if ($("#mainNav").offset().top > 100) {
+      $("#mainNav").addClass("navbar-shrink");
+    } else {
+      $("#mainNav").removeClass("navbar-shrink");
+    }
+  };
+  // Collapse now if page is not at top
+  navbarCollapse();
+  // Collapse the navbar when page is scrolled
+    $(window).scroll(navbarCollapse);
+
+  })(jQuery); // End of use strict
+
+  </script>
 
 
 <script src="https://www.gstatic.com/firebasejs/6.3.4/firebase-app.js"></script>
