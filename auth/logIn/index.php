@@ -1,3 +1,14 @@
+<?php
+session_start();
+
+//In case the user is already logged in, redirect him/her to /home.
+if ($_SESSION['loggedin']){
+  header('Location: /home');
+  exit();
+}
+
+?>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -23,7 +34,7 @@
     <body>
         <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
         <div class="container">
-          <a class="navbar-brand js-scroll-trigger" href="../../index.html"><img src="../../media/WB1.png" alt="Logo" width="45" height="45"></a>
+          <a class="navbar-brand js-scroll-trigger" href="/"><img src="../../media/WB1.png" alt="Logo" width="45" height="45"></a>
         </div>
       </nav>
         <div class="container-fluid">
@@ -35,15 +46,15 @@
                     <div class="row">
                       <div class="col-md-9 col-lg-8 mx-auto">
                         <h3 class="login-heading mb-4">Welcome back!</h3>
-                        <div>
+                        <form action='login-with-email.php' method='post'>
                           <div class="form-label-group">
-                            <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+                            <input type="email" id="inputEmail" class="form-control" placeholder="Email address" name='LOGIN_EMAIL'required autofocus>
                             <label for="inputEmail">Email address</label>
                             <small class= 'text text-danger' id= 'emError'></small>
                           </div>
 
                           <div class="form-label-group">
-                            <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+                            <input type="password" id="inputPassword" class="form-control" placeholder="Password" name='LOGIN_PASSWORD'required>
                             <label for="inputPassword">Password</label>
                             <small class= 'text text-danger' id= 'passError'></small>
                           </div>
@@ -51,12 +62,13 @@
                             <input type="checkbox" class="custom-control-input" id="customCheck1">
                             <label class="custom-control-label" for="customCheck1">Remember password</label>
                           </div>
-                          <button class="btn btn-lg btn-primary btn-block text-uppercase" id="submit" onclick= 'signIn()'>Sign in</button>
+                          <button class="btn btn-lg btn-primary btn-block text-uppercase" id="submit">Sign in</button>
                           <br>
+                        </form>
                           <div class="text-center">
                             <a class="small" href="passwordReset.html">Forgot password?</a>
                             <br>
-                            <small class= 'text text-muted'>Don't have an account? <a href= '../signUp/index.html'>Sign Up </a>now.</small>
+                            <small class= 'text text-muted'>Don't have an account? <a href= '../signUp/'>Sign Up </a>now.</small>
                           </div>
 
                           <hr class= 'my-4'>
@@ -79,10 +91,6 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
     crossorigin="anonymous"></script>
-    <script src="https://www.gstatic.com/firebasejs/6.3.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/6.3.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/6.3.0/firebase-firestore.js"></script>
-    <script src= '/firebaseConf.js'></script>
     <script src= 'logIn.js'></script>
     </body>
 </html>
