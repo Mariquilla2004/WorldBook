@@ -1,3 +1,11 @@
+<?php
+//Start the session.
+  session_start();
+  if( !isset($_SESSION['loggedin']) ){
+    header('Location: /auth/logIn');
+    exit();
+  }
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -241,7 +249,7 @@
             <!-- Nav Item - User Information -->
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small" id= 'userName'></span>
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small" id= 'userName'><?php echo $_SESSION['name'];?></span>
                 <img class= 'img-profile rounded-circle' src= '../media/avatar1.jpeg'></img>
               </a>
               <!-- Dropdown - User Information -->
@@ -338,7 +346,7 @@
         <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
         <div class="modal-footer">
           <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-          <a class="btn btn-primary" onclick= 'logOut()' style = 'color: #fff;'>Logout</a>
+          <a href='/auth/logout?home=yes' class="btn btn-primary" style = 'color: #fff;'>Logout</a>
         </div>
       </div>
     </div>
@@ -419,16 +427,8 @@
   integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E="
   crossorigin="anonymous"></script>
 
-  <!-- Firebase project SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/6.3.4/firebase-app.js"></script>
-  <script src= '/firebaseConf.js'></script>
-
-  <script src="https://www.gstatic.com/firebasejs/6.3.4/firebase-database.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/6.3.4/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/6.3.4/firebase-firestore.js"></script>
-
-  <!-- Custom scripts for all pages-->
-  <script src= 'bookdb.js'></script>
+  <!-- Custom scripts for all pages-
+  <script src= 'bookdb.js'></script>-->
   <script>
     !function(t){
     "use strict";t("#sidebarToggle, #sidebarToggleTop")
@@ -453,10 +453,8 @@
                             scrollTop:t(e.attr("href")).offset().top},1e3,"easeInOutExpo"),o.preventDefault()})}
 
     (jQuery);
+
+
   </script>
-  <script src= 'home.js'></script>
-
-
 </body>
-
 </html>

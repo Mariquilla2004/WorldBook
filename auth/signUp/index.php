@@ -1,3 +1,14 @@
+<?php
+session_start();
+
+//In case the user is already logged in, redirect him/her to home.
+if ($_SESSION['loggedin']){
+  header('Location: /home');
+  exit();
+}
+
+?>
+
 <!DOCTYPE html>
 <html>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,7 +26,7 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
         <div class="container">
-          <a class="navbar-brand js-scroll-trigger" href="../../index.html"><img src="../../media/WB1.png" alt="Logo" width="45" height="45"></a>
+          <a class="navbar-brand js-scroll-trigger" href='/'><img src="../../media/WB1.png" alt="Logo" width="45" height="45"></a>
         </div>
       </nav>
   <div class="container-fluid">
@@ -29,22 +40,23 @@
                 <h2 class="login-heading mb-4" style= ''>Welcome to <span style="color:#40ABF3;">the Comunity!</span></h2>
               </div>
               <div class="col-md-9 col-lg-8 mx-auto">
-                <div class="form-signin">
+                <form class="form-signin" id='signUpForm' action='register.php' method="POST">
+
                   <div class="form-label-group">
-                    <input type= 'text' id="inputUsername" class="form-control" placeholder="Username" required autofocus>
+                    <input type= 'text' id="inputUsername" class="form-control" placeholder="Username" name='registrationUser'required autofocus>
                     <label for="inputUsername">Username</label>
                     <small class= 'text text-danger' id= 'usernameError'></small>
                   </div>
 
                   <div class="form-label-group">
-                    <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required>
+                    <input type="email" id="inputEmail" class="form-control" placeholder="Email address" name= 'registrationEmail'required>
                     <label for="inputEmail">Email address</label>
                     <small class= 'text text-danger' id= 'emError'></small>
                   </div>
 
                   <div class= 'row'>
                   <div class="form-label-group col">
-                    <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+                    <input type="password" id="inputPassword" class="form-control" placeholder="Password" name='registrationPass' required>
                     <label for="inputPassword">Password</label>
                     <small class= 'text text-danger' id= 'passError'></small>
                   </div>
@@ -55,25 +67,26 @@
                     <small class= 'text text-danger' id= 'confirmPassError'></small>
                   </div>
                   </div>
+                  <button class="btn btn-lg btn-primary btn-block text-uppercase" type='submit'>Register</button>
 
-                  <button class="btn btn-lg btn-primary btn-block text-uppercase" onclick= 'signUp()'>Register</button>
+                </form>
                   <br>
-                  <div class="text-center"><small class='text text-muted'>Already have an account? <a
-                        href='../logIn/index.html'>Sign In </a>now.</small>
+                  <div class="text-center"><small class='text text-muted'>Already have an account?
+                    <a href='../logIn/'>Sign In </a>now.</small>
                   </div>
 
                   <hr class= 'my-4'>
                   <div class="form-signin">
                     <div class= 'text-center'>
-                      <a class="btn btn-outline-danger btn-block" onclick= 'googleSignUp()'>
+                      <a class="btn btn-outline-danger btn-block" ><!--onclick= 'googleSignUp()'>-->
                         <div id= 'i'><i class="fab fa-google mr-2"></i></div><div id= 'g'>Sign In with Google</div></a>
                     </div>
                   </div>
-                </div>
               </div>
             </div>
           </div>
         </div>
+
       </div>
     </div>
   </div>
@@ -83,11 +96,6 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
     crossorigin="anonymous"></script>
-  <script src="https://www.gstatic.com/firebasejs/6.3.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/6.3.0/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/6.3.0/firebase-database.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/6.3.0/firebase-firestore.js"></script>
-  <script src='/firebaseConf.js'></script>
   <script src='signUp.js'></script>
 </body>
 
