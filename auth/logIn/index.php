@@ -2,7 +2,7 @@
 session_start();
 
 //In case the user is already logged in, redirect him/her to /home.
-if ($_SESSION['loggedin']){
+if (isset($_SESSION['loggedin'])){
   header('Location: /home');
   exit();
 }
@@ -46,15 +46,15 @@ if ($_SESSION['loggedin']){
                     <div class="row">
                       <div class="col-md-9 col-lg-8 mx-auto">
                         <h3 class="login-heading mb-4">Welcome back!</h3>
-                        <form action='login-with-email.php' method='post'>
+                        <form action='./index.php' method='POST'>
                           <div class="form-label-group">
-                            <input type="email" id="inputEmail" class="form-control" placeholder="Email address" name='LOGIN_EMAIL'required autofocus>
+                            <input type="email" id="inputEmail" class="form-control" placeholder="Email address" name='email'required autofocus>
                             <label for="inputEmail">Email address</label>
-                            <small class= 'text text-danger' id= 'emError'></small>
+                            <small class= 'text text-danger' id= 'emailError'></small>
                           </div>
 
                           <div class="form-label-group">
-                            <input type="password" id="inputPassword" class="form-control" placeholder="Password" name='LOGIN_PASSWORD'required>
+                            <input type="password" id="inputPassword" class="form-control" placeholder="Password" name='pass'required>
                             <label for="inputPassword">Password</label>
                             <small class= 'text text-danger' id= 'passError'></small>
                           </div>
@@ -62,7 +62,7 @@ if ($_SESSION['loggedin']){
                             <input type="checkbox" class="custom-control-input" id="customCheck1">
                             <label class="custom-control-label" for="customCheck1">Remember password</label>
                           </div>
-                          <button class="btn btn-lg btn-primary btn-block text-uppercase" id="submit">Sign in</button>
+                          <button class="btn btn-lg btn-primary btn-block text-uppercase" id="submit">Log In</button>
                           <br>
                         </form>
                           <div class="text-center">
@@ -74,8 +74,9 @@ if ($_SESSION['loggedin']){
                           <hr class= 'my-4'>
                           <div class="form-signin">
                             <div class= 'text-center'>
-                              <a class="btn btn-outline-danger btn-block" onclick= 'googleSignIn()'>
-                                <div id= 'i'><i class="fab fa-google mr-2"></i></div><div id= 'g'>Sign In with Google</div></a>
+                              <button class="btn btn-outline-danger btn-block">
+                                <div id= 'i'><i class="fab fa-google mr-2"></i></div><div id= 'g'>Sign In with Google</div>
+                              </button>
                             </div>
                           </div>
                       </div>
@@ -94,3 +95,67 @@ if ($_SESSION['loggedin']){
     <script src= 'logIn.js'></script>
     </body>
 </html>
+<?php
+
+//Require the database connection and the error handler file.
+require('../../server-config/error-handler.php');
+require('../../server-config/connect.php');
+
+//Declare some variables we will be using.
+$login_email = $login_password = "";
+
+//Only execute the query when the form is submitted.
+if ($_SERVER['REQUEST_METHOD'] == 'POST'){
+
+  //Set the query that selects from the database the user we are looking for. Then prepare() it to protect our db from SQL injection.
+  $query= 'SELECT uid, password, name FROM wb_users WHERE email = ?';
+  $pdo= getConn();
+  $stmt= $pdo->prepare($query);
+
+  //After that, get the input values submitted by the user.
+  $login_email= validate($_POST['email']);
+  $login_password= validate($_POST['pass']);
+
+  //Execute() the query!
+  $stmt->execute([$login_email]);
+
+
+  //Fetch rows.
+  $row = $stmt->fetch();
+  $rows_found = $stmt->rowCount();
+
+  //If we get results, proceed to log the user in.
+  if ($rows_found > 0) {
+
+  //The password the user has submitted equals the one we've got from our query.
+    if ($login_password == $row['password']){
+
+      //Set some sessions to identificate the new logged user.
+      $_SESSION['loggedin'] = true;
+      $_SESSION['uid'] = $row['uid'];
+      $_SESSION['email'] = $login_email;
+      $_SESSION['name'] = $row['name'];
+
+      //Good to go!
+      echo "<script> window.location='/home'; </script>";
+      exit();
+
+    } else {
+      //Oh, oh, wrong password!
+      echo "<script> wrongPassword(); </script>";
+    }
+
+  //Otherwise, the email is wrong!
+  } else {
+    echo "<script> wrongEmail(); </script>";
+  }
+}
+
+//This function is intended to prevent our script from XSS and other attacks, by sanitizing the inputs. Cross your fingers!
+function validate($data) {
+  $data = trim($data);
+  $data = stripslashes($data);
+  $data = htmlspecialchars($data);
+  return $data;
+}
+?>

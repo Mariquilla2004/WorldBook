@@ -3,7 +3,7 @@ session_start();
 
 if ($_GET['home'] == 'yes' && $_SESSION['loggedin']){
   session_destroy();
-  header('Location: /auth/logIn');
+  header('Location: /');
   exit();
 
 } elseif ($_SESSION['loggedin']) {
@@ -13,6 +13,6 @@ if ($_GET['home'] == 'yes' && $_SESSION['loggedin']){
 } else {
   header('Location: /auth/logIn');
   exit();
-  
+
 }
  ?>
