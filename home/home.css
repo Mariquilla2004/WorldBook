@@ -1,12 +1,9 @@
-.sidebar{
-  color: rgba(14, 84, 127) !important;
-}
 
-    .rectangle {
-      height: 225px;
-      width: 160px;
-      background-color: rgb(204, 204, 204);
-    }
+.rectangle {
+  height: 225px;
+  width: 160px;
+  background-color: rgb(204, 204, 204);
+}
 
 .CardContainer{
   background-color: #f8f9fc;
@@ -18,9 +15,22 @@
 .bookCard{
   width: 160px;
   height: 225px;
-  margin-right: 12px;
   text-align: center;
-  font-family: 'Open Sans';
-  font-size: 1.5rem;
-  padding: 0.25rem;
+  font-size: 1.1rem;
+}
+
+.openSans400{
+  font-family: 'Open Sans' !important;
+}
+
+.poppins{
+  font-family: 'Poppins' !important;
+}
+
+.nounderline{
+  text-decoration: none !important;
+}
+
+.toast-error{
+  color: white;
 }

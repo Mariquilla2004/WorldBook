@@ -5,6 +5,66 @@
     header('Location: /auth/logIn');
     exit();
   }
+
+//Require the connection to the database and the error handler.
+require( '../server-config/error-handler.php');
+require("../server-config/connect.php");
+
+//Fetch all books from this user, and display them as bootstrap cards.
+function fetchLibrary(){
+
+  //Get the PDO connection.
+  $pdo= getConn();
+
+  //Now, get the books!
+  $query='SELECT title FROM library WHERE owner_id = ?';
+  $stmt= $pdo->prepare($query);
+  $stmt->execute([$_SESSION['uid']]);
+
+  //Display each of them to the user.
+  while($result= $stmt->fetch(PDO::FETCH_ASSOC)){
+
+    echo "<div class= 'card bookCard'>
+              <p class='card-header'>" . $result['title'] . "</p>
+              <div class='text-right' style='margin-top: auto;'>
+                <a href='#editBook' class='nounderline' role='button' data-toggle='modal'>
+                  <img class='edit pr-2' src='/media/edit-3.svg'>
+                </a>
+                <a href='#deleteBook' class='nounderline' role='button' data-toggle='modal'>
+                  <img class='trash pr-2' src='/media/trash-2.svg'>
+                </a>
+              </div>
+            </div>";
+    }
+}
+
+//This will get all books in the user's whishlist.
+function fetchWishlist(){
+
+  //Get the PDO connection.
+  $pdo= getConn();
+
+  //Select the wanted books from the db.
+  $query='SELECT title FROM wishlist WHERE requester_id = ?';
+  $stmt= $pdo->prepare($query);
+  $stmt->execute([$_SESSION['uid']]);
+
+  //Display each of them to the user.
+    while($result= $stmt->fetch(PDO::FETCH_ASSOC)){
+
+      echo "<div class= 'card bookCard'>
+              <p class='card-header'>" . $result['title'] . "</p>
+              <div class='text-right' style='margin-top: auto;'>
+                <a href='#editBook' class='nounderline' role='button' data-toggle='modal'>
+                  <img class='edit pr-2' src='/media/edit-3.svg'/>
+                </a>
+                <a href='#deleteBook' class='nounderline' role='button' data-toggle='modal'>
+                  <img class='trash pr-2' src='/media/trash-2.svg'>
+                </a>
+              </div>
+            </div>";
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -26,7 +86,7 @@
   integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs="
   crossorigin="anonymous"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
+  <link href="https://fonts.googleapis.com/css?family=Poppins:500|Open+Sans:300,300,400&display=swap" rel="stylesheet">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 
@@ -53,6 +113,31 @@
 </head>
 
 <body id="page-top">
+
+          <!-- Toast Container -->
+          <div style="position: relative;">
+            <div style="position:absolute; right: 1rem; top: 5rem; z-index: 1000">
+              <div class="alert alert-danger alert-dismissible fade hide" id='book_already_registered' role="alert">
+                <img src='/media/alert-triangle.svg' class='mr-2'>You can't add the same book twice.
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+              <!--Book is already registered error toast-
+              <div class="toast toast-error" id="book_already_registered" data-delay='4000'>
+                <div class="toast-header toast-error">
+                  <img src='/media/alert-triangle.svg' class='mr-2'>
+                  <strong class="mr-auto">Book Already Exists</strong>
+                  <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="toast-body">
+                  Ups! You can't add the same book twice...
+                </div>
+              </div>-->
+            </div>
+          </div>
 
   <!-- Page Wrapper -->
   <div id="wrapper">
@@ -173,7 +258,7 @@
                 <a class="dropdown-item d-flex align-items-center" href="#">
                   <div class="mr-3">
                     <div class="icon-circle bg-primary">
-                      <i class="fas fa-file-alt text-white"></i>
+                      <i class='fa fa-bars'></i>
                     </div>
                   </div>
                   <div>
@@ -212,7 +297,7 @@
                 </a>
                 <a class="dropdown-item d-flex align-items-center" href="#">
                   <div class="dropdown-list-image mr-3">
-                    <img class="rounded-circle" src="https://source.unsplash.com/AU4VPcFN4LE/60x60" alt="">
+                    <img class="rounded-circle" src="../media/demi3.jpeg" alt="">
                     <div class="status-indicator"></div>
                   </div>
                   <div>
@@ -222,7 +307,7 @@
                 </a>
                 <a class="dropdown-item d-flex align-items-center" href="#">
                   <div class="dropdown-list-image mr-3">
-                    <img class="rounded-circle" src="https://source.unsplash.com/CS2uCrpNzJY/60x60" alt="">
+                    <img class="rounded-circle" src="../media/maria7.jpeg" alt="">
                     <div class="status-indicator bg-warning"></div>
                   </div>
                   <div>
@@ -232,7 +317,7 @@
                 </a>
                 <a class="dropdown-item d-flex align-items-center" href="#">
                   <div class="dropdown-list-image mr-3">
-                    <img class="rounded-circle" src="https://source.unsplash.com/Mv9hjnEUHR4/60x60" alt="">
+                    <img class="rounded-circle" src="../media/maria7.jpeg" alt="">
                     <div class="status-indicator bg-success"></div>
                   </div>
                   <div>
@@ -288,7 +373,7 @@
               <i class="fas fa-plus-circle fa-1x"></i>
           </div>
 
-          <div class="card-deck CardContainer" id ='libraryCardContainer'></div>
+          <div class="card-deck CardContainer"><?php fetchLibrary(); ?></div>
         </div>
 
           <br><br>
@@ -301,7 +386,7 @@
                 <i class="fas fa-plus-circle"></i>
             </div>
 
-            <div class="card-deck CardContainer" id ='wishlistCardContainer'></div>
+            <div class="card-deck CardContainer"><?php fetchWishlist();?></div>
           </div>
 
 
@@ -333,6 +418,10 @@
     <i class="fas fa-angle-up"></i>
   </a>
 
+
+
+    <!-- **HOME MODALS** -->
+
   <!-- Logout Modal-->
   <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -358,42 +447,33 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Add a storie to your library!</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Add a book to your library!</h5>
           <button type="button" id= "close" class="close" data-dismiss="modal" aria-label="Close">
 
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          <form id="bookForm">
+          <form action='./addToLibrary/index.php' method='post'>
             <div class="form-group">
               <label for="recipient-name" class="col-form-label">Title:</label>
-              <input type="text" class="form-control" id="title">
+              <input type="text" class="form-control" name='title' required>
             </div>
             <div class="form-group">
-              <label for="recipient-name" class="col-form-label" id>Author:</label>
-              <input type="text" class="form-control" id="author">
+              <label for="recipient-name" class="col-form-label">Author:</label>
+              <input type="text" class="form-control" name='author' required>
             </div>
-            <div class="form-group">
-              <label for="recipient-name" class="col-form-label">ISBN:</label>
-              <input type="text" class="form-control" id="ISBN">
-              <br>
-
-              <input type="button" value = 'Add' class="btn btn-primary" id="addButton" onclick="addToLibrary();" />
-            </div>
-
-            </div>
-            </div>
+              <button class="btn btn-primary">Add</button>
           </form>
+          </div>
+        </div>
         </div>
       </div>
-    </div>
-  </div>
 
 
 
   <!-- Wishlist Modal-->
-  <div class="modal fade" id="wishlistModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade" id="wishlistModal" tabindex="-1" role="dialog" aria-labelledby="wishlistModal" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -404,16 +484,16 @@
           </div>
           <div class="modal-body">
 
-            <form id="wishlistForm">
+            <form id="wishlistForm" action="./addToWishlist/index.php" method="post">
               <div class="form-group">
                 <label for="recipient-name" class="col-form-label">Title:</label>
-                <input type="text" class="form-control" id="titlew">
+                <input type="text" class="form-control" name="title">
               </div>
               <div class="form-group">
                 <label for="recipient-name" class="col-form-label">Author:</label>
-                <input type="text" class="form-control" id="authorw">
+                <input type="text" class="form-control" name="author">
                 <br>
-                <input type="button" value= 'Add' class="btn btn-primary" class= "wishButton" id="wishButton" onclick= 'addToWishlist();' />
+                <button class="btn btn-primary">Add</button>
               </div>
             </form>
           </div>
@@ -421,14 +501,75 @@
       </div>
     </div>
 
+
+
+    <!-- Delete Book Modal. -->
+  <div class="modal fade" id="deleteBook">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title openSans400" style='color: #40abf3;'>Delete Book</h4>
+          <button type="button" class="close" data-dismiss="modal">×</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body openSans400">
+          Are you sure you wanna delete this book?
+          <br>
+          You can't undo this!
+        </div>
+
+        <!-- Modal footer -->
+        <div class="modal-footer openSans400">
+          <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Not really</button>
+          <form action='./deleteBook/index.php' method='post'><button type="submit"class="btn btn-danger" disabled>Yep</button></form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+      <!-- Delete Book Modal. -->
+  <div class="modal fade" id="editBook">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title openSans400" style='color: #40abf3;'>Edit Book</h4>
+          <button type="button" class="close" data-dismiss="modal">×</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body openSans400">
+          <p>Hey!
+            <br>
+            You can't edit any book (for now!).
+            <br>
+            This is still under development so any feedback will be most appreciated!
+            <br>
+            Thanks for your understanding.
+        </div>
+
+        <!-- Modal footer -->
+        <div class="modal-footer openSans400">
+          <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
+          <form action='./editBook/index.php' method='post'><button type="submit"class="btn btn-primary" disabled>Save Changes</button></form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
   <!-- Bootstrap core JavaScript-->
 <script
   src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"
   integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E="
   crossorigin="anonymous"></script>
 
-  <!-- Custom scripts for all pages-
-  <script src= 'bookdb.js'></script>-->
   <script>
     !function(t){
     "use strict";t("#sidebarToggle, #sidebarToggleTop")
@@ -453,8 +594,45 @@
                             scrollTop:t(e.attr("href")).offset().top},1e3,"easeInOutExpo"),o.preventDefault()})}
 
     (jQuery);
+  </script>
+  <script>
 
+    //Get the 'trash' and the 'edit' icons.
+    var trash = document.getElementsByClassName('trash');
+    var edit = document.getElementsByClassName('edit');
 
+    //Change their color on hover.
+    iconAnimate(trash, 'trash-2.svg', 'trash-2-obscure.svg');
+    iconAnimate(edit, 'edit-3.svg', 'edit-3-obscure.svg');
+
+    //Give color animation effect on icon hover.
+    function iconAnimate(icon, original, dark){
+
+      //Using jQuery loop through each of them.
+      Array.from(icon).forEach(function(e){
+
+        //On mouse over, change icon color to a darker one.
+        e.addEventListener('mouseover', function(){
+          e.setAttribute("src", '/media/' + dark);
+        });
+
+        //And on mouse out, go back to the original color.
+        e.addEventListener('mouseout', function(){
+          e.setAttribute("src", '/media/' + original);
+        })
+      });
+    }
   </script>
 </body>
 </html>
+<?php
+
+  //Display an error message when book is already registered.
+  if (isset($_GET['error']) && $_GET['error'] == 'book_already_registered'){
+
+    echo "<script>
+            document.getElementById('book_already_registered').classList.remove('hide');
+            document.getElementById('book_already_registered').classList.add('show');
+          </script>";
+  }
+?>
