@@ -7,19 +7,18 @@ $pdo= getConn();
 //Also we'll need the session to get user ids.
 session_start();
 
+//Get the input submitted by the user, AND the user's id.
+$title = validate($_POST['title']);
+$author = validate($_POST['author']);
+$name= $_SESSION['name'];
+
 //Only add the book if it hasn't been added before.
-if (alreadyExists() < 1){
+if (alreadyExists($title, $author, $name) < 1){
 
-  //Get the input submitted by the user, AND the user's id.
-  $title = validate($_POST['title']);
-  $author = validate($_POST['author']);
-  $uid= $_SESSION['uid'];
-
-  //Prepare the query to insert the new book.
+  //Prepare and execute the query to insert the new book.
   $query='INSERT INTO wishlist (title, author, requester_id) VALUES (?, ?, ?)';
   $stmt= $pdo->prepare($query);
-
-  $stmt->execute([$title, $author, $uid]);
+  $stmt->execute([$title, $author, $name]);
 
   //All good! Redirect to home.
   header('Location: /home');
@@ -28,23 +27,18 @@ if (alreadyExists() < 1){
   echo "<script>window.location = '/home?error=book_already_registered';</script>";
 }
 //Does the book already exist? Let's check it.
-function alreadyExists(){
-
-  //Get the input submitted by the user, AND the user's id.
-  $title = validate($_POST['title']);
-  $author = validate($_POST['author']);
-  $uid= $_SESSION['uid'];
+function alreadyExists($title, $author, $name){
 
   $pdo= getConn();
   $query='SELECT COUNT(requester_id) FROM wishlist WHERE title= ? AND author= ? AND requester_id = ?';
   $stmt= $pdo->prepare($query);
-  $stmt->execute([$title, $author, $uid]);
+  $stmt->execute([$title, $author, $name]);
   $nRows= $stmt->fetchColumn();
 
   return $nRows;
 }
 
-//Hi, hacker, you won't do any XSS attack here.
+//Trying not to get Reflected XSS attacks...
 function validate($data) {
   $data = trim($data);
   $data = stripslashes($data);

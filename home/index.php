@@ -19,7 +19,7 @@ function fetchLibrary(){
   //Now, get the books!
   $query='SELECT title FROM library WHERE owner_id = ?';
   $stmt= $pdo->prepare($query);
-  $stmt->execute([$_SESSION['uid']]);
+  $stmt->execute([$_SESSION['name']]);
 
   //Display each of them to the user.
   while($result= $stmt->fetch(PDO::FETCH_ASSOC)){
@@ -47,7 +47,7 @@ function fetchWishlist(){
   //Select the wanted books from the db.
   $query='SELECT title FROM wishlist WHERE requester_id = ?';
   $stmt= $pdo->prepare($query);
-  $stmt->execute([$_SESSION['uid']]);
+  $stmt->execute([$_SESSION['name']]);
 
   //Display each of them to the user.
     while($result= $stmt->fetch(PDO::FETCH_ASSOC)){
@@ -65,6 +65,7 @@ function fetchWishlist(){
             </div>";
     }
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -118,7 +119,7 @@ function fetchWishlist(){
           <div style="position: relative;">
             <div style="position:absolute; right: 1rem; top: 5rem; z-index: 1000">
               <div class="alert alert-danger alert-dismissible fade hide" id='book_already_registered' role="alert">
-                <img src='/media/alert-triangle.svg' class='mr-2'>You can't add the same book twice.
+                <img src='/media/alert-triangle.svg' class='mr-2'>Sorry, you can't add the same book twice!
                   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
@@ -248,28 +249,16 @@ function fetchWishlist(){
               <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-bell fa-fw"></i>
                 <!-- Counter - Alerts -->
-                <span class="badge badge-danger badge-counter">1</span>
+                <span id='alertsBadge' class="badge badge-danger badge-counter"></span>
               </a>
               <!-- Dropdown - Alerts -->
-              <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
+              <div id='alertsMenu' class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
                 <h6 class="dropdown-header">
                   Alerts Center
                 </h6>
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                  <div class="mr-3">
-                    <div class="icon-circle bg-primary">
-                      <i class='fa fa-bars'></i>
-                    </div>
-                  </div>
-                  <div>
-                    <div class="small text-gray-500">Now</div>
-                    <span class="font-weight-bold">Welcome to WorldBook!</span>
-                  </div>
-                </a>
 
-                <!--Every time the algorithm finds a match, it will alert here.-->
-                <div id= 'newMatch' ></div>
-                <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
+                <!-- Notificate users about book matches. -->
+                <?php getMatches(); ?>
               </div>
             </li>
 
@@ -278,7 +267,7 @@ function fetchWishlist(){
               <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-envelope fa-fw"></i>
                 <!-- Counter - Messages -->
-                <span class="badge badge-danger badge-counter">7</span>
+                <span class="badge badge-danger badge-counter"></span>
               </a>
               <!-- Dropdown - Messages -->
               <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="messagesDropdown">
@@ -286,46 +275,9 @@ function fetchWishlist(){
                   Message Center
                 </h6>
                 <a class="dropdown-item d-flex align-items-center" href="#">
-                  <div class="dropdown-list-image mr-3">
-                    <img class="rounded-circle" src="../media/demi3.jpeg" alt="">
-                    <div class="status-indicator bg-success"></div>
-                  </div>
-                  <div class="font-weight-bold">
-                    <div class="text-truncate">Hi there! I am wondering if you can help me with a problem I've been having.</div>
-                    <div class="small text-gray-500">Emily Fowler · 58m</div>
-                  </div>
+                    <div class="text-gray-500">No Messages</div>
                 </a>
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                  <div class="dropdown-list-image mr-3">
-                    <img class="rounded-circle" src="../media/demi3.jpeg" alt="">
-                    <div class="status-indicator"></div>
-                  </div>
-                  <div>
-                    <div class="text-truncate">I have the photos that you ordered last month, how would you like them sent to you?</div>
-                    <div class="small text-gray-500">Jae Chun · 1d</div>
-                  </div>
-                </a>
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                  <div class="dropdown-list-image mr-3">
-                    <img class="rounded-circle" src="../media/maria7.jpeg" alt="">
-                    <div class="status-indicator bg-warning"></div>
-                  </div>
-                  <div>
-                    <div class="text-truncate">Last month's report looks great, I am very happy with the progress so far, keep up the good work!</div>
-                    <div class="small text-gray-500">Morgan Alvarez · 2d</div>
-                  </div>
-                </a>
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                  <div class="dropdown-list-image mr-3">
-                    <img class="rounded-circle" src="../media/maria7.jpeg" alt="">
-                    <div class="status-indicator bg-success"></div>
-                  </div>
-                  <div>
-                    <div class="text-truncate">Am I a good boy? The reason I ask is because someone told me that people say this to all dogs, even if they aren't good...</div>
-                    <div class="small text-gray-500">Chicken the Dog · 2w</div>
-                  </div>
-                </a>
-                <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
+                <a class="dropdown-item text-center small text-gray-500" href="#">Read More messages.</a>
               </div>
             </li>
 
@@ -364,7 +316,7 @@ function fetchWishlist(){
         <div class="container-fluid">
 
           <!-- Page Heading -->
-          <h1 class="h3 mb-4 text-gray-800">My Library</h1>
+          <h1 class="h3 mb-4 text-gray-800 poppins">My Library</h1>
 
           <!--Library Card Deck-->
         <div class= 'card-deck'>
@@ -377,7 +329,7 @@ function fetchWishlist(){
         </div>
 
           <br><br>
-          <h1 class="h3 mb-4 text-gray-800">Wishlist</h1>
+          <h1 class="h3 mb-4 text-gray-800 poppins">Wishlist</h1>
 
           <!--Wishlist Card Deck-->
           <div class= 'card-deck'>
@@ -487,11 +439,11 @@ function fetchWishlist(){
             <form id="wishlistForm" action="./addToWishlist/index.php" method="post">
               <div class="form-group">
                 <label for="recipient-name" class="col-form-label">Title:</label>
-                <input type="text" class="form-control" name="title">
+                <input type="text" class="form-control" name="title" required>
               </div>
               <div class="form-group">
                 <label for="recipient-name" class="col-form-label">Author:</label>
-                <input type="text" class="form-control" name="author">
+                <input type="text" class="form-control" name="author" required>
                 <br>
                 <button class="btn btn-primary">Add</button>
               </div>
@@ -547,7 +499,7 @@ function fetchWishlist(){
         <div class="modal-body openSans400">
           <p>Hey!
             <br>
-            You can't edit any book (for now!).
+            You can't edit any book (for now).
             <br>
             This is still under development so any feedback will be most appreciated!
             <br>
@@ -622,6 +574,14 @@ function fetchWishlist(){
         })
       });
     }
+
+    //Display number of notifications in Alerts Center.
+    var notificationNumber='';
+    $('a', '#alertsMenu').each(function () {
+      ++notificationNumber;
+
+    });
+    $('#alertsBadge').text(notificationNumber);
   </script>
 </body>
 </html>
@@ -634,5 +594,51 @@ function fetchWishlist(){
             document.getElementById('book_already_registered').classList.remove('hide');
             document.getElementById('book_already_registered').classList.add('show');
           </script>";
+  }
+
+  function getMatches(){
+
+    //Get the PDO connection.
+    $pdo= getConn();
+
+    //Now, get the books!
+    $query='SELECT title, owner, requester, found_at FROM matches WHERE owner = ? OR requester= ? ORDER BY found_at';
+    $stmt= $pdo->prepare($query);
+    $stmt->execute([$_SESSION['name'], $_SESSION['name']]);
+
+    while($result= $stmt->fetch(PDO::FETCH_ASSOC)){
+
+      $dt= new DateTime($result['found_at']);
+      
+      //Display different notification messages for user's owned books vs requested books.
+      if ($result['requester'] == $_SESSION['name']){
+
+        echo '<a class="dropdown-item d-flex align-items-center" href="#">
+                <div class="mr-3">
+                  <div class="icon-circle" style="background-color: #40abf3;">
+                    <i style="color: #ffff;"class="fas fa-book-medical"></i>
+                  </div>
+                </div>
+                <div>
+                  <div class="small text-gray-500 text-left">'. $dt->format('M j g:i A') .'</div>
+                  <span class="font-weight-bold">'. $result['owner'] .'</span> has got <span class="font-weight-bold">'. $result['title'] .'!</span>
+                </div>
+              </a>';
+
+      }elseif ($result['owner'] == $_SESSION['name']) {
+
+        echo '<a class="dropdown-item d-flex align-items-center" href="#">
+                <div class="mr-3">
+                  <div class="icon-circle" style="background-color: #40abf3;">
+                    <i style="color: #ffff;"class="fas fa-book-medical"></i>
+                  </div>
+                </div>
+                <div>
+                  <div class="small text-gray-500">'. $dt->format('M j g:i A') .'</div>
+                  <span class="font-weight-bold">'. $result['requester'] .'</span> wants to read <span class="font-weight-bold">'. $result['title'] .'!</span>
+                </div>
+              </a>';
+      }
+    }
   }
 ?>
