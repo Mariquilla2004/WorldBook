@@ -108,7 +108,7 @@ $login_email = $login_password = "";
 if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
   //Set the query that selects from the database the user we are looking for. Then prepare() it to protect our db from SQL injection.
-  $query= 'SELECT uid, password, name FROM wb_users WHERE email = ?';
+  $query= 'SELECT uid, password, name, bio, fav_book FROM wb_users WHERE email = ?';
   $pdo= getConn();
   $stmt= $pdo->prepare($query);
 
@@ -135,6 +135,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
       $_SESSION['uid'] = $row['uid'];
       $_SESSION['email'] = $login_email;
       $_SESSION['name'] = $row['name'];
+      $_SESSION['bio'] = $row['bio'];
+      $_SESSION['fav_book'] = $row['fav_book'];
 
       //Good to go!
       echo "<script> window.location='/home'; </script>";

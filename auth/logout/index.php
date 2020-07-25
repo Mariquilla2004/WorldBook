@@ -1,13 +1,9 @@
 <?php
 session_start();
 
-if ($_GET['home'] == 'yes' && $_SESSION['loggedin']){
+ if (isset($_SESSION['loggedin'])) {
   session_destroy();
-  header('Location: /');
-  exit();
-
-} elseif ($_SESSION['loggedin']) {
-  header('Location: /home');
+  header('Location: /auth/logIn');
   exit();
 
 } else {

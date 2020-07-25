@@ -4,6 +4,6 @@ function wrongPassword(){
 }
 
 function wrongEmail(){
-  $('#emailError').text('Error: Is this your email?');
+  $('#emailError').text('Error: Is this your email? Hint: Probably not.');
   return;
 }
