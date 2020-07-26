@@ -1,0 +1,15 @@
+html, body{
+  height: 100%;
+}
+.poppins{
+  font-family: 'Poppins';
+}
+.openSans{
+  font-family: 'Open Sans';
+}
+.black-text{
+  color:black !important;
+}
+.text-14{
+  font-size: 14px !important;
+}

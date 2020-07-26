@@ -9,6 +9,7 @@
 //Require the connection to the database and the error handler.
 require( '../server-config/error-handler.php');
 require("../server-config/connect.php");
+require("../server-config/getMatches.php");
 
 //Fetch all books from this user, and display them as bootstrap cards.
 function fetchLibrary(){
@@ -82,14 +83,10 @@ function fetchWishlist(){
 
   <!-- Custom fonts, js and css for this template-->
     <script src="https://kit.fontawesome.com/6838ece04b.js" crossorigin="anonymous"></script>
-    <script
-  src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-  integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs="
-  crossorigin="anonymous"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <link href="https://fonts.googleapis.com/css?family=Poppins:500|Open+Sans:300,300,400&display=swap" rel="stylesheet">
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 
   <!-- Custom styles for this template-->
   <link href="css/sb-admin-2.css" rel="stylesheet">
@@ -259,6 +256,7 @@ function fetchWishlist(){
 
                 <!-- Notificate users about book matches. -->
                 <?php getMatches(); ?>
+                <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
               </div>
             </li>
 
@@ -291,11 +289,11 @@ function fetchWishlist(){
               </a>
               <!-- Dropdown - User Information -->
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                <a class="dropdown-item" href="profile.html">
+                <a class="dropdown-item" href="profile">
                   <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                   Profile
                 </a>
-                <a class="dropdown-item" href="setting.html">
+                <a class="dropdown-item" href="settings">
                   <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                   Settings
                 </a>
@@ -517,11 +515,6 @@ function fetchWishlist(){
   </div>
 
   <!-- Bootstrap core JavaScript-->
-<script
-  src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"
-  integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E="
-  crossorigin="anonymous"></script>
-
   <script>
     !function(t){
     "use strict";t("#sidebarToggle, #sidebarToggleTop")
@@ -576,12 +569,11 @@ function fetchWishlist(){
     }
 
     //Display number of notifications in Alerts Center.
-    var notificationNumber='';
-    $('a', '#alertsMenu').each(function () {
-      ++notificationNumber;
-
-    });
-    $('#alertsBadge').text(notificationNumber);
+    if (notificationNumber -1 == 0){
+      $('#alertsBadge').text('');
+    }else{
+      $('#alertsBadge').text(notificationNumber -1);
+    }
   </script>
 </body>
 </html>
@@ -596,49 +588,4 @@ function fetchWishlist(){
           </script>";
   }
 
-  function getMatches(){
-
-    //Get the PDO connection.
-    $pdo= getConn();
-
-    //Now, get the books!
-    $query='SELECT title, owner, requester, found_at FROM matches WHERE owner = ? OR requester= ? ORDER BY found_at';
-    $stmt= $pdo->prepare($query);
-    $stmt->execute([$_SESSION['name'], $_SESSION['name']]);
-
-    while($result= $stmt->fetch(PDO::FETCH_ASSOC)){
-
-      $dt= new DateTime($result['found_at']);
-      
-      //Display different notification messages for user's owned books vs requested books.
-      if ($result['requester'] == $_SESSION['name']){
-
-        echo '<a class="dropdown-item d-flex align-items-center" href="#">
-                <div class="mr-3">
-                  <div class="icon-circle" style="background-color: #40abf3;">
-                    <i style="color: #ffff;"class="fas fa-book-medical"></i>
-                  </div>
-                </div>
-                <div>
-                  <div class="small text-gray-500 text-left">'. $dt->format('M j g:i A') .'</div>
-                  <span class="font-weight-bold">'. $result['owner'] .'</span> has got <span class="font-weight-bold">'. $result['title'] .'!</span>
-                </div>
-              </a>';
-
-      }elseif ($result['owner'] == $_SESSION['name']) {
-
-        echo '<a class="dropdown-item d-flex align-items-center" href="#">
-                <div class="mr-3">
-                  <div class="icon-circle" style="background-color: #40abf3;">
-                    <i style="color: #ffff;"class="fas fa-book-medical"></i>
-                  </div>
-                </div>
-                <div>
-                  <div class="small text-gray-500">'. $dt->format('M j g:i A') .'</div>
-                  <span class="font-weight-bold">'. $result['requester'] .'</span> wants to read <span class="font-weight-bold">'. $result['title'] .'!</span>
-                </div>
-              </a>';
-      }
-    }
-  }
 ?>
