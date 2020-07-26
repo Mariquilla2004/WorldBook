@@ -1,7 +1,6 @@
 <?php
 
 //Require the connection to the database.
-require("../../server-config/connect.php");
 $pdo= getConn();
 
 //Insert all matching books into a table named 'matches'.
@@ -29,4 +28,22 @@ $query2=  'INSERT INTO matches (title, author, owner, requester)
 //Prepare and execute the query.
 $stmt2= $pdo->prepare($query2);
 $stmt->execute();
+
+function getConn(){
+  $host= '192.168.1.15';
+  $db_user= 'worldbook-server';
+  $db_password= 'chocolateEsVida';
+  $db_name= 'worldbook';
+  $charset= 'utf8mb4';
+  $port= '3306';
+
+  $options = [
+      \PDO::ATTR_ERRMODE            => \PDO::ERRMODE_EXCEPTION,
+      \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,
+      \PDO::ATTR_EMULATE_PREPARES   => false,
+  ];
+
+  $dsn = "mysql:host=$host;dbname=$db_name;charset=$charset;port=$port";
+  return new \PDO($dsn, $db_user, $db_password, $options);
+}
  ?>
