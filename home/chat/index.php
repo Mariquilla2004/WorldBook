@@ -152,7 +152,7 @@ require("../../server-config/connect.php");
     $.ajax({
       type: 'POST',
       url: 'action.php',
-      data: {action: 'fetchChatMessages', sender: $('#chatUser').text()},
+      data: {action: 'fetchChatMessages', sender: '<?php echo $_SESSION['ChatUserReceiver'];?>'},
       success: function(r){
 
         if (r != "No Messages"){
@@ -175,7 +175,7 @@ require("../../server-config/connect.php");
         $.ajax({
           type: 'POST',
           url: 'action.php',
-          data: {action: 'postMessage', message: message, receiver: $('#chatUser').text()},
+          data: {action: 'postMessage', message: message, receiver: '<?php echo $_SESSION['ChatUserReceiver'];?>'},
           success: function(response){
             r_obj= JSON.parse(response);
             $('#chatMessagesWrapper').append("<div class='m-1 message'><p class='text-right pr-1'>" + r_obj[0].message + "</p><small class='text-muted'>"+r_obj[0].sent_at+"</small></div>");
@@ -192,7 +192,7 @@ require("../../server-config/connect.php");
     $.ajax({
       type: 'POST',
       url: 'action.php',
-      data: {action: 'unread', sender: $('#chatUser').text()},
+      data: {action: 'unread', sender: '<?php echo $_SESSION['ChatUserReceiver'];?>'},
       success: function(response){
 
         if (response != "No New Messages"){
@@ -227,7 +227,7 @@ require("../../server-config/connect.php");
     $.ajax({
       type: 'POST',
       url: 'action.php',
-      data: {action: 'setAsRead', sender: $('#chatUser').text()},
+      data: {action: 'setAsRead', sender: '<?php echo $_SESSION['ChatUserReceiver'];?>'},
       success: function(){}
     });
   }
