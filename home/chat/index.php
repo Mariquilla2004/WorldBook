@@ -112,7 +112,7 @@ require("../../server-config/connect.php");
         </ul>
       </div>
       <div class='col-md black-text'>
-        <p id='chatUser' class='h4 text-bold'><?php echo $_SESSION['ChatUserReceiver']; ?></p>
+        <p id='chatUser' class='h4 text-bold'><?php echo isset($_SESSION['ChatUserReceiver']) ? $_SESSION['ChatUserReceiver'] : $_SESSION['ChatUserReceiver']=''; ?></p>
         <div id='chatMessagesWrapper' class='scrollable'>
         </div>
         <div id='sendMessage'>
