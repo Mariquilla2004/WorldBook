@@ -23,7 +23,7 @@ switch ($_POST['action']) {
 
     //After that, prepare() the query for extra security and finally execute it.
     $stmt = $pdo->prepare($query);
-    $stmt->execute([$_POST['message'], $currentUser, $_POST['receiver']]);
+    $stmt->execute([$_POST['message'], $currentUser, base64_decode($_POST['receiver'])]);
 
     //Then echo the result.
     $arr_response[] = array("message" => $_POST['message'],
@@ -40,7 +40,7 @@ switch ($_POST['action']) {
 
     //For added security, prepare() the query. Then, finally execute it.
     $stmt = $pdo->prepare($query);
-    $stmt->execute([$currentUser, $_POST['sender'], $_POST['sender'], $currentUser]);
+    $stmt->execute([$currentUser, base64_decode($_POST['sender']), base64_decode($_POST['sender']), $currentUser]);
 
     //Write the data to an array for each row we get in return. If we don't get any, echo "No messages";
     if ($stmt->rowCount() > 0){
@@ -68,7 +68,7 @@ switch ($_POST['action']) {
     $query= 'SELECT message, sent_at, sender, receiver FROM chat WHERE receiver = ? AND sender= ? AND m_read= 0';
 
     $stmt = $pdo->prepare($query);
-    $stmt->execute([$currentUser, $_POST['sender']]);
+    $stmt->execute([$currentUser, base64_decode($_POST['sender'])]);
 
     //Write the data to an array for each row we get in return. If we don't get any, echo "No messages";
     if ($stmt->rowCount() > 0){
@@ -99,25 +99,38 @@ switch ($_POST['action']) {
 
     //Prepare() it and execute() it.
     $stmt= $pdo->prepare($query);
-    $stmt->execute([$currentUser, $_POST['sender']]);
+    $stmt->execute([$currentUser, base64_decode($_POST['sender'])]);
 
     echo "success";
     break;
 
+  //Case: Get only the users to which the current user have talked to.
   case 'getUsers':
 
-    $query='SELECT name FROM wb_users WHERE name != ?';
+    //Bear in mind that this query can return repeated values, for sender and receiver, if the users have sent multiple messages.
+    $query='SELECT sender, receiver FROM chat WHERE sender = ? OR receiver= ?';
     $stmt= $pdo->prepare($query);
-    $stmt->execute([$_SESSION['name']]);
+    $stmt->execute([$currentUser, $currentUser]);
 
     if ($stmt->rowCount() > 0){
       $return_arr = array();
       while ($row= $stmt->fetch(PDO::FETCH_ASSOC)){
-        $return_arr[] = array("name" => $row['name']);
+
+        //Select the sender if it isn't the current user.
+        if ($row['sender'] != $currentUser){
+            $return_arr[] = array($row['sender']);
+
+          //Otherwise, if the sender IS the current user, select the receiver.
+        } elseif ($row['receiver'] != $currentUser){
+            $return_arr[]= array($row['receiver']);
+        }
       }
 
-      echo json_encode($return_arr);
-    }else{
+      //To fix the "repeated names" problem, remove any repeated value in the return array.
+      $return_array = array_values(array_unique($return_arr, SORT_REGULAR));
+      echo json_encode($return_array);
+
+    } else {
       echo "No Users";
     }
 
@@ -125,7 +138,7 @@ switch ($_POST['action']) {
 
   case 'changeUser':
 
-    $_SESSION['ChatUserReceiver'] = $_POST['user'];
+    $_SESSION['ChatUserReceiver'] = base64_encode($_POST['user']);
 
     break;
 

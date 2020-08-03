@@ -83,7 +83,7 @@ require("../../server-config/connect.php");
         </a>
         <!-- Dropdown - User Information -->
         <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-          <a class="dropdown-item" href="profile.html">
+          <a class="dropdown-item" href="/home/profile">
             <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
             Profile
           </a>
@@ -111,8 +111,8 @@ require("../../server-config/connect.php");
 
         </ul>
       </div>
-      <div class='col-md black-text'>
-        <p id='chatUser' class='h4 text-bold'><?php echo isset($_SESSION['ChatUserReceiver']) ? $_SESSION['ChatUserReceiver'] : $_SESSION['ChatUserReceiver']=''; ?></p>
+      <div class='col-md black-text' id='chatColumn'>
+        <p id='chatUser' class='h4 text-bold'><?php echo isset($_SESSION['ChatUserReceiver']) ? base64_decode($_SESSION['ChatUserReceiver']) : base64_decode($_SESSION['ChatUserReceiver']=''); ?></p>
         <div id='chatMessagesWrapper' class='scrollable'>
         </div>
         <div id='sendMessage'>
@@ -120,6 +120,25 @@ require("../../server-config/connect.php");
         </div>
       </div>
       <div class='col-md-1'>
+    </div>
+  </div>
+
+  <!--Logout Modal -->
+  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+          <a href='/auth/logout?home=yes' class="btn btn-primary" style = 'color: #fff;'>Logout</a>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -134,15 +153,15 @@ require("../../server-config/connect.php");
       data: {action: 'getUsers'},
       success: function(r){
 
-        if(r != 'No Users'){
+        if(r != "No Users"){
           var r_obj= JSON.parse(r);
           var i=0;
           while(r_obj.length > i){
-            $('#usersList').append("<li class='list-group-item black-text h5'><a class='chatUser' href='#'>"+r_obj[i].name+"</a></li>");
+            $('#usersList').append("<li class='list-group-item black-text h5'><a class='chatUser' href='#'>"+r_obj[i]+"</a></li>");
             i++;
           }
-        } else {
-          $('#usersList').append("<b>No users...</b>");
+        } else{
+          $('#chatColumn').html('<p class="display-4 mt-5">You haven\' talked to anybody yet.</p><br><a href="/home">Go back</a>');
         }
       }
     });
@@ -211,7 +230,7 @@ require("../../server-config/connect.php");
     var i=0;
     while(i < Object.keys(responseObj).length){
 
-      if (responseObj[i].to == '<?php echo $_SESSION['name']; ?>'){
+      if (encode(responseObj[i].to) == '<?php echo base64_encode($_SESSION['name']); ?>'){
         $('#chatMessagesWrapper').append("<div class=' m-1 message'><span class='text-left pl-1'>" + responseObj[i].message + "</span><p class='text-right text-muted'><small>"+responseObj[i].sent_at+"</small></p></div>");
 
       } else {
@@ -244,5 +263,22 @@ require("../../server-config/connect.php");
       }
     });
   });
+
+  //Encode data.
+  function encode(str) {
+    return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g,
+     function toSolidBytes(match, p1) {
+       return String.fromCharCode('0x' + p1);
+     }));
+}
+  </script>
+  <script>
+    //Display number of notifications in Alerts Center.
+    var notificationNumber= $('#alertsMenu > a').length;
+    if (notificationNumber -1 == 0){
+      $('#alertsBadge').text('');
+    }else{
+      $('#alertsBadge').text(notificationNumber -1);
+    }
   </script>
 </body>
