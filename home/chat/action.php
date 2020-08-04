@@ -27,7 +27,7 @@ switch ($_POST['action']) {
 
     //Then echo the result.
     $arr_response[] = array("message" => $_POST['message'],
-                            "sent_at" => date('Y-m-d h:i:s a')
+                            "sent_at" => date('M j g:i A')
                           );
     echo json_encode($arr_response);
     break;
@@ -36,7 +36,7 @@ switch ($_POST['action']) {
   case 'fetchChatMessages':
 
     //Write the query that gets the conversation messages.
-    $query='SELECT message, sent_at, receiver, sender FROM chat WHERE (receiver = ? AND sender= ?) OR (receiver=? AND sender=?)';
+    $query='SELECT message, sent_at, receiver, sender FROM chat WHERE (receiver = ? AND sender= ?) OR (receiver=? AND sender=?) ORDER BY sent_at ASC';
 
     //For added security, prepare() the query. Then, finally execute it.
     $stmt = $pdo->prepare($query);
@@ -46,8 +46,10 @@ switch ($_POST['action']) {
     if ($stmt->rowCount() > 0){
 
       while ($row= $stmt->fetch(PDO::FETCH_ASSOC)){
+        $dt = new DateTime($row['sent_at']);
+
         $arr_response[] = array("message" => $row['message'],
-                          "sent_at" => $row['sent_at'],
+                          "sent_at" => $dt->format('M j g:i A'),
                           "from" => $row['sender'],
                           "to" => $row['receiver']
                         );
@@ -65,30 +67,58 @@ switch ($_POST['action']) {
   //Case: Fetch all unread messages. This action is performed each second.
   case 'unread':
 
-    $query= 'SELECT message, sent_at, sender, receiver FROM chat WHERE receiver = ? AND sender= ? AND m_read= 0';
+    if (isset($_POST['sender'])){
+      $query= 'SELECT message, sent_at, sender, receiver FROM chat WHERE receiver = ? AND sender= ? AND m_read= 0 ORDER BY sent_at ASC';
 
-    $stmt = $pdo->prepare($query);
-    $stmt->execute([$currentUser, base64_decode($_POST['sender'])]);
+      $stmt = $pdo->prepare($query);
+      $stmt->execute([$currentUser, base64_decode($_POST['sender'])]);
 
-    //Write the data to an array for each row we get in return. If we don't get any, echo "No messages";
-    if ($stmt->rowCount() > 0){
+      //Write the data to an array for each row we get in return. If we don't get any, echo "No messages";
+      if ($stmt->rowCount() > 0){
 
-      $return_arr = array();
-      while ($row= $stmt->fetch(PDO::FETCH_ASSOC)){
-        $return_arr[] = array("message" => $row['message'],
-                          "sent_at" => $row['sent_at'],
-                          "from" => $row['sender'],
-                          "to" => $row['receiver']
-                        );
+        $return_arr = array();
+        while ($row= $stmt->fetch(PDO::FETCH_ASSOC)){
+          $dt = new DateTime($row['sent_at']);
+
+          $return_arr[] = array("message" => $row['message'],
+                            "sent_at" => $dt->format('M j g:i A'),
+                            "from" => $row['sender'],
+                            "to" => $row['receiver']
+                          );
+        }
+
+        //And now, JSON_encode() the array so we can get it from AJAX requests.
+        echo json_encode($return_arr);
+
+      } else {
+        echo "No New Messages";
       }
 
-      //And now, JSON_encode() the array so we can get it from AJAX requests.
-      echo json_encode($return_arr);
+    } else{
+      $query ='SELECT message, sent_at, sender FROM chat WHERE receiver = ? AND m_read= 0 ORDER BY sent_at DESC';
+      $stmt = $pdo->prepare($query);
+      $stmt->execute([$currentUser]);
 
-    } else {
-      echo "No New Messages";
+      //Write the data to an array for each row we get in return. If we don't get any, echo "No messages";
+      if ($stmt->rowCount() > 0){
+
+        $return_arr = array();
+        while ($row= $stmt->fetch(PDO::FETCH_ASSOC)){
+          $dt = new DateTime($row['sent_at']);
+
+          $return_arr[] = array("message" => $row['message'],
+                            "sent_at" => $dt->format('M j g:i A'),
+                            "from" => base64_encode($row['sender'])
+                          );
+        }
+
+        //And now, JSON_encode() the array so we can get it from AJAX requests.
+        echo json_encode($return_arr);
+
+      } else {
+        echo "No New Messages";
+      }
     }
-
     break;
 
   //Case: Set new messages as read.
@@ -138,7 +168,7 @@ switch ($_POST['action']) {
 
   case 'changeUser':
 
-    $_SESSION['ChatUserReceiver'] = base64_encode($_POST['user']);
+    $_SESSION['ChatUserReceiver'] = $_POST['user'];
 
     break;
 

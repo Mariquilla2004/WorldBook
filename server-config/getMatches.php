@@ -1,12 +1,13 @@
 <?php
-
+require("connect.php");
+session_start();
   function getMatches(){
 
     //Get the PDO connection.
     $pdo= getConn();
 
     //Now, get the books!
-    $query='SELECT title, owner, requester, found_at FROM matches WHERE owner = ? OR requester= ? ORDER BY found_at';
+    $query='SELECT title, owner, requester, found_at FROM matches WHERE owner = ? OR requester= ? ORDER BY found_at DESC';
     $stmt= $pdo->prepare($query);
     $stmt->execute([$_SESSION['name'], $_SESSION['name']]);
 
@@ -45,4 +46,6 @@
       }
     }
   }
+
+  getMatches();
 ?>

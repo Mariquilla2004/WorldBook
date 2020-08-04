@@ -2,7 +2,6 @@
 //Require the connection to the database and the error handler.
 require( '../../server-config/error-handler.php');
 require("../../server-config/connect.php");
-require("../../server-config/getMatches.php");
 
 session_start();
 
@@ -95,7 +94,7 @@ session_start();
                 <h6 class="dropdown-header">
                   Alerts Center
                 </h6>
-                <?php getMatches(); ?>
+                <div id='alertsContent'></div>
                 <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
               </div>
             </li>
@@ -105,13 +104,14 @@ session_start();
               <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-envelope fa-fw"></i>
                 <!-- Counter - Messages -->
-                <span class="badge badge-danger badge-counter"></span>
+                <span id='messagesBadge' class="badge badge-danger badge-counter"></span>
               </a>
               <!-- Dropdown - Messages -->
               <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="messagesDropdown">
                 <h6 class="dropdown-header">
                   Message Center
                 </h6>
+                <div id='messagesContent'></div>
                 <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
               </div>
             </li>
@@ -405,7 +405,7 @@ session_start();
     $('#deleteAccountButton').click(function(){
       window.location = '/home/settings/deleteAccount.php';
     });
-    
+
     function passwordsDontMatch(){
       $('#passwordsMustMatch').text('Password and confirm password fields must match');
     }
@@ -419,6 +419,98 @@ session_start();
   if (get.success == 'email_updated' || get.success== 'updated_password' || get.error == 'email_already_registered' || get.error == 'incorrect_password'){
     $('#list-tab a[href="#list-account"]').tab('show');
   }
+  </script>
+  <script>
+
+  $(document).ready(function(){
+
+    getNotifications();
+    getAlerts();
+    setInterval(function(){getAlerts()}, 5000);
+    setInterval(function(){getNotifications();}, 5000);
+
+  });
+
+  //Display number of notifications.
+  function notification(a,b){
+    var notificationNumber= $(a).length;
+    if (notificationNumber == 0){
+      $(b).text('');
+    }else{
+      $(b).text(notificationNumber);
+    }
+  }
+
+
+  function getNotifications(){
+    $.ajax({
+      type: 'POST',
+      url: '/home/chat/action.php',
+      data: {action: 'unread'},
+      success: function(r){
+
+        if(r != 'No New Messages'){
+          r_obj = JSON.parse(r);
+          $('#messagesContent').text('');
+          for (var i=0; i<r_obj.length; i++){
+
+            $('#messagesContent').append('<a class="m dropdown-item d-flex align-items-center" id="'+r_obj[i].from+'" href="#">'+
+                                            '<div class="mr-3">'+
+                                              '<div class="icon-circle">'+
+                                                '<img class="rounded-circle img-fluid img-profile" src="/media/avatar1.jpeg">'+
+                                              '</div>'+
+                                            '</div>'+
+                                            '<div class="small openSans400">'+
+                                                decode(r_obj[i].from)+' '+
+                                              '<span class="small text-gray-500 text-left">'+
+                                                r_obj[i].sent_at+
+                                              '</span>'+
+                                              '<div class="poppins text-14">'+
+                                                r_obj[i].message+
+                                              '</div>'+
+                                            '</div>'+
+                                          '</a>');
+          }
+
+          notification('#messagesContent > a', '#messagesBadge');
+        } else if(r=='No New Messages'){
+        $('#messagesContent').html("<a class='dropdown-item d-flex align-items-center' href='#'><div class='text-gray-500'>No Messages</div></a>");
+
+        }
+      }
+    });
+  }
+
+  $('#messagesContent').on('click', '.m', function(){
+    $.ajax({
+        type: 'POST',
+        url: '/home/chat/action.php',
+        data: {action:'changeUser', user: $(this).attr('id')},
+        success: function(){
+          window.location='/home/chat';
+        }
+    });
+  });
+
+  //Notificate stuff.
+  function getAlerts(){
+    $.ajax({
+      type: 'POST',
+      url: '/server-config/getMatches.php',
+      data: {},
+      success: function(r){
+        $('#alertsContent').html(r);
+        notification('#alertsContent > a', '#alertsBadge');
+      }
+    })
+  }
+
+  function decode(str) {
+    return decodeURIComponent(atob(str).split('').map(function (c) {
+      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+  }
+
   </script>
 </body>
 

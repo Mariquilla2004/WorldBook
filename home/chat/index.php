@@ -53,6 +53,10 @@ require("../../server-config/connect.php");
           <h6 class="dropdown-header">
             Alerts Center
           </h6>
+
+          <div id='alertsContent'>
+          </div>
+
           <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
         </div>
       </li>
@@ -62,13 +66,16 @@ require("../../server-config/connect.php");
         <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i class="fas fa-envelope fa-fw"></i>
           <!-- Counter - Messages -->
-          <span class="badge badge-danger badge-counter"></span>
+          <span id='messagesBadge' class="badge badge-danger badge-counter"></span>
         </a>
         <!-- Dropdown - Messages -->
         <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="messagesDropdown">
           <h6 class="dropdown-header">
             Message Center
           </h6>
+
+          <div id='messagesContent'></div>
+
           <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
         </div>
       </li>
@@ -176,6 +183,7 @@ require("../../server-config/connect.php");
 
         if (r != "No Messages"){
           displayMessages(r);
+          setMessagesAsRead();
 
         } else {
           $('#chatMessagesWrapper').html('<p class="text-center">No Messages Yet.</p>');
@@ -183,8 +191,13 @@ require("../../server-config/connect.php");
       }
     });
 
-    //Fetch latest messages on real time.
+    //Fetch latest messages and notifications on real time.
+    getNotifications();
+    getAlerts();
     setInterval(function(){loadUnreadMessages()}, 1000);
+    setInterval(function(){getNotifications()}, 5000);
+    setInterval(function(){getAlerts()}, 5000);
+
 
     //On message submit, send an AJAX request to the script that saves the message into the db.
     $('#message').keyup(function(e){
@@ -215,9 +228,8 @@ require("../../server-config/connect.php");
       success: function(response){
 
         if (response != "No New Messages"){
-          displayMessages(response);
           setMessagesAsRead();
-
+          displayMessages(response);
         }
       }
     });
@@ -227,8 +239,7 @@ require("../../server-config/connect.php");
   function displayMessages(response){
 
     responseObj = JSON.parse(response);
-    var i=0;
-    while(i < Object.keys(responseObj).length){
+    for(var i=0; i < Object.keys(responseObj).length; i++){
 
       if (encode(responseObj[i].to) == '<?php echo base64_encode($_SESSION['name']); ?>'){
         $('#chatMessagesWrapper').append("<div class=' m-1 message'><span class='text-left pl-1'>" + responseObj[i].message + "</span><p class='text-right text-muted'><small>"+responseObj[i].sent_at+"</small></p></div>");
@@ -237,7 +248,6 @@ require("../../server-config/connect.php");
         $('#chatMessagesWrapper').append("<div class='m-1 message'><p class='text-right pr-1'>" + responseObj[i].message + "</p><small class='text-muted'>"+responseObj[i].sent_at+"</small></div>");
 
       }
-      i++;
     }
   }
 
@@ -257,28 +267,101 @@ require("../../server-config/connect.php");
     $.ajax({
       type: 'POST',
       url: 'action.php',
-      data: {action: 'changeUser', user: $(this).text()},
+      data: {action: 'changeUser', user: encode($(this).text())},
       success: function(){
-        location.reload();
+        window.location='/home/chat';
       }
     });
   });
 
-  //Encode data.
+  $('#messagesContent').on('click', '.m', function(){
+    $.ajax({
+        type: 'POST',
+        url: 'action.php',
+        data: {action:'changeUser', user: $(this).attr('id')},
+        success: function(){
+          window.location='/home/chat';
+        }
+    });
+  });
+
+  //Get notifications from all chats.
+  function getNotifications(){
+    $.ajax({
+      type: 'POST',
+      url: 'action.php',
+      data: {action: 'unread'},
+      success: function(r){
+
+        if(r != 'No New Messages'){
+          r_obj = JSON.parse(r);
+          $('#messagesContent').text('');
+          for (var i=0; i<r_obj.length; i++){
+
+            $('#messagesContent').append('<a class="m dropdown-item d-flex align-items-center" id="'+r_obj[i].from+'" href="#">'+
+                                            '<div class="mr-3">'+
+                                              '<div class="icon-circle">'+
+                                                '<img class="rounded-circle img-fluid img-profile" src="/media/avatar1.jpeg">'+
+                                              '</div>'+
+                                            '</div>'+
+                                            '<div class="small openSans400">'+
+                                                decode(r_obj[i].from)+' '+
+                                              '<span class="small text-gray-500 text-left">'+
+                                                r_obj[i].sent_at+
+                                              '</span>'+
+                                              '<div class="poppins text-14">'+
+                                                r_obj[i].message+
+                                              '</div>'+
+                                            '</div>'+
+                                          '</a>');
+          }
+
+          notification('#messagesContent > a', '#messagesBadge');
+        } else if(r=='No New Messages'){
+          $('#messagesContent').html("<div class='dropdown-item d-flex align-items-center' href='#'><div class='text-gray-500'>No Messages</div></div>");
+          notification('#messagesContent > a', '#messagesBadge');
+
+        }
+      }
+    });
+  }
+
+  //Notificate stuff.
+  function getAlerts(){
+    $.ajax({
+      type: 'POST',
+      url: '/server-config/getMatches.php',
+      data: {},
+      success: function(r){
+        $('#alertsContent').html(r);
+        notification('#alertsContent > a', '#alertsBadge');
+      }
+    })
+  }
+
+  //Encode stuff.
   function encode(str) {
     return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g,
      function toSolidBytes(match, p1) {
        return String.fromCharCode('0x' + p1);
      }));
-}
-  </script>
-  <script>
-    //Display number of notifications in Alerts Center.
-    var notificationNumber= $('#alertsMenu > a').length;
-    if (notificationNumber -1 == 0){
-      $('#alertsBadge').text('');
-    }else{
-      $('#alertsBadge').text(notificationNumber -1);
-    }
+   }
+
+   //Decode stuff.
+   function decode(str) {
+     return decodeURIComponent(atob(str).split('').map(function (c) {
+       return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+     }).join(''));
+   }
+
+   //Display number of notifications.
+   function notification(a,b){
+     var notificationNumber= $(a).length;
+     if (notificationNumber == 0){
+       $(b).text('');
+     }else{
+       $(b).text(notificationNumber);
+     }
+   }
   </script>
 </body>
