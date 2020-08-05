@@ -112,7 +112,7 @@ session_start();
                   Message Center
                 </h6>
                 <div id='messagesContent'></div>
-                <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
+                <a class="dropdown-item text-center small text-gray-500" href="/home/chat">Read More Messages</a>
               </div>
             </li>
 
@@ -452,16 +452,18 @@ session_start();
         if(r != 'No New Messages'){
           r_obj = JSON.parse(r);
           $('#messagesContent').text('');
-          for (var i=0; i<r_obj.length; i++){
 
-            $('#messagesContent').append('<a class="m dropdown-item d-flex align-items-center" id="'+r_obj[i].from+'" href="#">'+
+          for (var i=0; i<r_obj.length; i++){
+            var messageHTML = '<a class="m dropdown-item d-flex align-items-center" id="'+r_obj[i].from+'" href="#">'+
                                             '<div class="mr-3">'+
                                               '<div class="icon-circle">'+
                                                 '<img class="rounded-circle img-fluid img-profile" src="/media/avatar1.jpeg">'+
                                               '</div>'+
                                             '</div>'+
-                                            '<div class="small openSans400">'+
-                                                decode(r_obj[i].from)+' '+
+                                            '<div class="openSans400">'+
+                                                decode(r_obj[i].from)+
+                                              '<span class="text-14 text-success poppins">'+
+                                              '(<span class="messageCounter">1</span>)</span>'+ ' '+
                                               '<span class="small text-gray-500 text-left">'+
                                                 r_obj[i].sent_at+
                                               '</span>'+
@@ -469,15 +471,31 @@ session_start();
                                                 r_obj[i].message+
                                               '</div>'+
                                             '</div>'+
-                                          '</a>');
+                                          '</a>';
+            if($('.m').length == 0 || $('#'+r_obj[i].from).length == 0){
+
+                $('#messagesContent').append(messageHTML);
+                notification('#messagesContent > a', '#messagesBadge');
+
+            } else if($('.m').length > 0){
+
+              $('.m').each(function(){
+
+                if($(this).attr('id') == r_obj[i].from){
+                  var n = +($(this).find('.messageCounter').text());
+                  $(this).find('.messageCounter').text(n+1);
+                }
+
+              });
+            }
           }
 
-          notification('#messagesContent > a', '#messagesBadge');
         } else if(r=='No New Messages'){
         $('#messagesContent').html("<a class='dropdown-item d-flex align-items-center' href='#'><div class='text-gray-500'>No Messages</div></a>");
 
         }
       }
+
     });
   }
 
