@@ -14,6 +14,8 @@ session_start();
     while($result= $stmt->fetch(PDO::FETCH_ASSOC)){
 
       $dt= new DateTime($result['found_at']);
+      $hours = $_POST['timeOffset'];
+      $localdt = $dt->add(new DateInterval("PT{$hours}H"));
 
       //Display different notification messages for user's owned books vs requested books.
       if ($result['requester'] == $_SESSION['name']){
@@ -25,7 +27,7 @@ session_start();
                   </div>
                 </div>
                 <div>
-                  <div class="small text-gray-500 text-left">'. $dt->format('M j g:i A') .'</div>
+                  <div class="small text-gray-500 text-left">'. $localdt->format('M j g:i A') .'</div>
                   <span class="font-weight-bold">'. $result['owner'] .'</span> has got <span class="font-weight-bold">'. $result['title'] .'!</span>
                 </div>
               </a>';
@@ -39,7 +41,7 @@ session_start();
                   </div>
                 </div>
                 <div>
-                  <div class="small text-gray-500">'. $dt->format('M j g:i A') .'</div>
+                  <div class="small text-gray-500">'. $localdt->format('M j g:i A') .'</div>
                   <span class="font-weight-bold">'. $result['requester'] .'</span> wants to read <span class="font-weight-bold">'. $result['title'] .'!</span>
                 </div>
               </a>';

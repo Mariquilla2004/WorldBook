@@ -25,9 +25,16 @@ switch ($_POST['action']) {
     $stmt = $pdo->prepare($query);
     $stmt->execute([$_POST['message'], $currentUser, base64_decode($_POST['receiver'])]);
 
+    //Get the user's current date.
+    $dt = new \DateTime("now", new \DateTimeZone("UTC"));
+    $hours = $_POST['timeOffset'];
+
+    //Adding (or substracting) to the db's timestamp the previously gotten time difference will give us the user's local time at which the message was sent.
+    $localdt = $dt->add(new DateInterval("PT{$hours}H"));
+
     //Then echo the result.
     $arr_response[] = array("message" => $_POST['message'],
-                            "sent_at" => date('M j g:i A')
+                            "sent_at" => $localdt->format('M j g:i A')
                           );
     echo json_encode($arr_response);
     break;
@@ -42,14 +49,20 @@ switch ($_POST['action']) {
     $stmt = $pdo->prepare($query);
     $stmt->execute([$currentUser, base64_decode($_POST['sender']), base64_decode($_POST['sender']), $currentUser]);
 
-    //Write the data to an array for each row we get in return. If we don't get any, echo "No messages";
+    //Write the data to an array for each row we get in return. If we get none, echo "No messages";
     if ($stmt->rowCount() > 0){
 
       while ($row= $stmt->fetch(PDO::FETCH_ASSOC)){
+
+        //$dt is the time at which the message was sent in UTC time. $hours is the difference between user's local time and UTC time (in hours).
         $dt = new DateTime($row['sent_at']);
+        $hours = $_POST['timeOffset'];
+
+        //Adding (or substracting) to the db's timestamp the previously gotten time difference will give us the user's local time at which the message was sent.
+        $localdt = $dt->add(new DateInterval("PT{$hours}H"));
 
         $arr_response[] = array("message" => $row['message'],
-                          "sent_at" => $dt->format('M j g:i A'),
+                          "sent_at" => $localdt->format('M j g:i A'),
                           "from" => $row['sender'],
                           "to" => $row['receiver']
                         );
@@ -78,10 +91,14 @@ switch ($_POST['action']) {
 
         $return_arr = array();
         while ($row= $stmt->fetch(PDO::FETCH_ASSOC)){
+
+          //$dt is the time at which the message was sent in UTC time. $hours is the difference between user's local time and UTC time (in hours).
           $dt = new DateTime($row['sent_at']);
+          $hours = $_POST['timeOffset'];
+          $localdt = $dt->add(new DateInterval("PT{$hours}H"));
 
           $return_arr[] = array("message" => $row['message'],
-                            "sent_at" => $dt->format('M j g:i A'),
+                            "sent_at" => $localdt->format('M j g:i A'),
                             "from" => $row['sender'],
                             "to" => $row['receiver']
                           );
@@ -104,10 +121,14 @@ switch ($_POST['action']) {
 
         $return_arr = array();
         while ($row= $stmt->fetch(PDO::FETCH_ASSOC)){
+
+          //$dt is the time at which the message was sent in UTC time. $hours is the difference between user's local time and UTC time (in hours).
           $dt = new DateTime($row['sent_at']);
+          $hours = $_POST['timeOffset'];
+          $localdt = $dt->add(new DateInterval("PT{$hours}H"));
 
           $return_arr[] = array("message" => $row['message'],
-                            "sent_at" => $dt->format('M j g:i A'),
+                            "sent_at" => $localdt->format('M j g:i A'),
                             "from" => base64_encode($row['sender'])
                           );
         }

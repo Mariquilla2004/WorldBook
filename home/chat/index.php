@@ -180,7 +180,7 @@ require("../../server-config/connect.php");
     $.ajax({
       type: 'POST',
       url: 'action.php',
-      data: {action: 'fetchChatMessages', sender: '<?php echo $_SESSION['ChatUserReceiver'];?>'},
+      data: {action: 'fetchChatMessages', sender: '<?php echo $_SESSION['ChatUserReceiver'];?>', timeOffset: -new Date().getTimezoneOffset()/60},
       success: function(r){
 
         if (r != "No Messages"){
@@ -209,7 +209,7 @@ require("../../server-config/connect.php");
         $.ajax({
           type: 'POST',
           url: 'action.php',
-          data: {action: 'postMessage', message: message, receiver: '<?php echo $_SESSION['ChatUserReceiver'];?>'},
+          data: {action: 'postMessage', message: message, receiver: '<?php echo $_SESSION['ChatUserReceiver'];?>', timeOffset: -new Date().getTimezoneOffset()/60},
           success: function(response){
             r_obj= JSON.parse(response);
             $('#chatMessagesWrapper').append("<div class='m-1 message'><p class='text-right pr-1'>" + r_obj[0].message + "</p><small class='text-muted'>"+r_obj[0].sent_at+"</small></div>");
@@ -226,7 +226,7 @@ require("../../server-config/connect.php");
     $.ajax({
       type: 'POST',
       url: 'action.php',
-      data: {action: 'unread', sender: '<?php echo $_SESSION['ChatUserReceiver'];?>'},
+      data: {action: 'unread', sender: '<?php echo $_SESSION['ChatUserReceiver'];?>', timeOffset: -new Date().getTimezoneOffset()/60},
       success: function(response){
 
         if (response != "No New Messages"){
@@ -293,7 +293,7 @@ require("../../server-config/connect.php");
     $.ajax({
       type: 'POST',
       url: 'action.php',
-      data: {action: 'unread'},
+      data: {action: 'unread', timeOffset: -new Date().getTimezoneOffset()/60},
       success: function(r){
 
         if(r != 'No New Messages'){

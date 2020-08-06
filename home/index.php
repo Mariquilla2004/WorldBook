@@ -578,7 +578,7 @@ function fetchWishlist(){
       $.ajax({
         type: 'POST',
         url: 'chat/action.php',
-        data: {action: 'unread'},
+        data: {action: 'unread', timeOffset: -new Date().getTimezoneOffset()/60},
         success: function(r){
 
           if(r != 'No New Messages'){
@@ -646,7 +646,7 @@ function fetchWishlist(){
       $.ajax({
         type: 'POST',
         url: '/server-config/getMatches.php',
-        data: {},
+        data: {timeOffset: -new Date().getTimezoneOffset()/60},
         success: function(r){
           $('#alertsContent').html(r);
           notification('#alertsContent > a', '#alertsBadge');
