@@ -25,7 +25,8 @@ function fetchLibrary(){
   //Display each of them to the user.
   while($result= $stmt->fetch(PDO::FETCH_ASSOC)){
 
-    echo "<div class= 'card bookCard'>
+    echo "<div>
+            <div class='card bookCard'>
               <p class='card-header'>" . $result['title'] . "</p>
               <div class='text-right' style='margin-top: auto;'>
                 <a href='#editBook' class='nounderline' role='button' data-toggle='modal'>
@@ -35,7 +36,8 @@ function fetchLibrary(){
                   <img class='trash pr-2' src='/media/trash-2.svg'>
                 </a>
               </div>
-            </div>";
+            </div>
+          </div>";
     }
 }
 
@@ -53,15 +55,17 @@ function fetchWishlist(){
   //Display each of them to the user.
     while($result= $stmt->fetch(PDO::FETCH_ASSOC)){
 
-      echo "<div class= 'card bookCard'>
-              <p class='card-header'>" . $result['title'] . "</p>
-              <div class='text-right' style='margin-top: auto;'>
-                <a href='#editBook' class='nounderline' role='button' data-toggle='modal'>
-                  <img class='edit pr-2' src='/media/edit-3.svg'/>
-                </a>
-                <a href='#deleteBook' class='nounderline' role='button' data-toggle='modal'>
-                  <img class='trash pr-2' src='/media/trash-2.svg'>
-                </a>
+      echo "<div>
+              <div class='card bookCard'>
+                <p class='card-header'>" . $result['title'] . "</p>
+                <div class='text-right' style='margin-top: auto;'>
+                  <a href='#editBook' class='nounderline' role='button' data-toggle='modal'>
+                    <img class='edit pr-2' src='/media/edit-3.svg'>
+                  </a>
+                  <a href='#deleteBook' class='nounderline' role='button' data-toggle='modal'>
+                    <img class='trash pr-2' src='/media/trash-2.svg'>
+                  </a>
+                </div>
               </div>
             </div>";
     }
@@ -87,26 +91,13 @@ function fetchWishlist(){
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.3/tiny-slider.css">
+
 
   <!-- Custom styles for this template-->
   <link href="css/sb-admin-2.css" rel="stylesheet">
   <link href= 'home.css' rel= 'stylesheet'>
 
-
-  <style>
-    .rectangle {
-      height: 225px;
-      width: 160px;
-      background-color: rgb(204, 204, 204);
-    }
-
-    .fa-plus-circle{
-      padding-top: 3cm;
-      padding-left: 2cm;
-      background-color: rgb(204, 204, 204);
-      border: none;
-    }
-    </style>
 
 </head>
 
@@ -311,50 +302,84 @@ function fetchWishlist(){
         <!-- End of Topbar -->
 
         <!-- Begin Page Content -->
-        <div class="container-fluid">
 
-          <!-- Page Heading -->
-          <h1 class="h3 mb-4 text-gray-800 poppins">My Library</h1>
-
-          <!--Library Card Deck-->
-        <div class= 'card-deck'>
-
-          <div class="rectangle" data-toggle="modal" data-target="#addModal" style= 'margin: 12px;'>
-              <i class="fas fa-plus-circle fa-1x"></i>
-          </div>
-
-          <div class="card-deck CardContainer"><?php fetchLibrary(); ?></div>
+        <br>
+        <div class='row'>
+            <div class='col-1'></div>
+            <h1 class="col h3 mb-4 text-gray-800 poppins">My Library
+              <img class='add' src='/media/plus.svg' data-toggle="modal" data-target="#addModal">
+            </h1>
         </div>
 
-          <br><br>
-          <h1 class="h3 mb-4 text-gray-800 poppins">Wishlist</h1>
+        <div class='row no-gutters'>
 
-          <!--Wishlist Card Deck-->
-          <div class= 'card-deck'>
-
-            <div class="rectangle" data-toggle="modal" data-target="#wishlistModal" style= 'margin: 12px;'>
-                <i class="fas fa-plus-circle"></i>
+          <div class='col-1 align-self-center'>
+            <div class='prev' id='prevButton' aria-controls='customize' tabindex="-1" data-controls='prev'>
+              <img src='https://ganlanyuan.github.io/tiny-slider/demo/images/angle-left.png'>
             </div>
-
-            <div class="card-deck CardContainer"><?php fetchWishlist();?></div>
+          </div>
+          <div class="col">
+            <div class='my-slider'>
+              <?php fetchLibrary(); ?>
+            </div>
+          </div>
+          <div class='col-1 align-self-center'>
+            <div class='next' id='nextButton' aria-controls='customize' tabindex='-1' data-controls='next'>
+              <img src='https://ganlanyuan.github.io/tiny-slider/demo/images/angle-right.png'>
+            </div>
           </div>
 
+        </div>
 
+        <br>
+        <br>
+        <hr class='my-4 mx-5'>
+        <br>
+        <br>
+
+          <!-- Wishlist -->
+        <div class='row'>
+          <div class='col-1'></div>
+          <h1 class="col h3 mb-4 text-gray-800 poppins">My Wishlist
+            <img class='add' src='/media/plus.svg' data-toggle="modal" data-target="#wishlistModal">
+         </h1>
+        </div>
+
+        <div class='row no-gutters'>
+
+          <div class='col-1 align-self-center'>
+            <div class='prev' id='w-prevButton' aria-controls='customize' tabindex="-1" data-controls='prev'>
+              <img src='https://ganlanyuan.github.io/tiny-slider/demo/images/angle-left.png'>
+            </div>
           </div>
-          <br><br>
+          <div class="col">
+            <div class='w-slider'>
+              <?php fetchWishlist(); ?>
+            </div>
+          </div>
+          <div class='col-1 align-self-center'>
+            <div class='next' id='w-nextButton' aria-controls='customize' tabindex='-1' data-controls='next'>
+              <img src='https://ganlanyuan.github.io/tiny-slider/demo/images/angle-right.png'>
+            </div>
+          </div>
+
+        </div>
+        <br><br>
+
+        <br><br>
+
           <!-- Footer -->
-          <footer class="sticky-footer bg-white">
-            <div class="container my-auto">
-              <div class="copyright text-center my-auto">
-                <span>Copyright &copy; WorldBook 2019</span>
-              </div>
+        <footer class="sticky-footer bg-white">
+          <div class="container my-auto">
+            <div class="copyright text-center my-auto">
+              <span>Copyright &copy; WorldBook 2019</span>
             </div>
-          </footer>
+          </div>
+        </footer>
       <!-- End of Footer -->
 
         </div>
 
-      </div>
       <!-- End of Main Content -->
 
     </div>
@@ -545,10 +570,12 @@ function fetchWishlist(){
     //Get the 'trash' and the 'edit' icons.
     var trash = document.getElementsByClassName('trash');
     var edit = document.getElementsByClassName('edit');
+    var add = document.getElementsByClassName('add');
 
     //Change their color on hover.
     iconAnimate(trash, 'trash-2.svg', 'trash-2-obscure.svg');
     iconAnimate(edit, 'edit-3.svg', 'edit-3-obscure.svg');
+    iconAnimate(add, 'plus.svg', 'plus-obscure.svg');
 
     //Give color animation effect on icon hover.
     function iconAnimate(icon, original, dark){
@@ -575,6 +602,61 @@ function fetchWishlist(){
       $('#alertsBadge').text(notificationNumber -1);
     }
   </script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.2/min/tiny-slider.js"></script>
+  <script>
+  var slider = tns({
+    container: '.my-slider',
+    items: 1,
+    nav: false,
+    prevButton: '#prevButton',
+    nextButton: '#nextButton',
+    responsive: {
+      600: {
+        items: 2,
+        gutter: 2
+      },
+      768: {
+        items: 3,
+        gutter: 4
+      },
+      1013: {
+        items: 4,
+        gutter: 5
+      },
+      1200: {
+        items: 4,
+        gutter: 5
+      }
+    }
+  });
+
+  var otherSlider = tns({
+    container: '.w-slider',
+    items: 1,
+    nav: false,
+    prevButton: '#w-prevButton',
+    nextButton: '#w-nextButton',
+    responsive: {
+      600: {
+        items: 2,
+        gutter: 2
+      },
+      768: {
+        items: 3,
+        gutter: 4
+      },
+      1013: {
+        items: 4,
+        gutter: 5
+      },
+      1200: {
+        items: 4,
+        gutter: 5
+      }
+    }
+  });
+</script>
 </body>
 </html>
 <?php
