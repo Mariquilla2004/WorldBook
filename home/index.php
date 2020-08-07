@@ -318,8 +318,8 @@ function fetchWishlist(){
               <img src='https://ganlanyuan.github.io/tiny-slider/demo/images/angle-left.png'>
             </div>
           </div>
-          <div class="col">
-            <div class='my-slider'>
+          <div class="col-10">
+            <div id='my-slider'>
               <?php fetchLibrary(); ?>
             </div>
           </div>
@@ -348,17 +348,17 @@ function fetchWishlist(){
         <div class='row no-gutters'>
 
           <div class='col-1 align-self-center'>
-            <div class='prev' id='w-prevButton' aria-controls='customize' tabindex="-1" data-controls='prev'>
+            <div class='prev' id='wprevButton' aria-controls='customize' tabindex="-1" data-controls='prev'>
               <img src='https://ganlanyuan.github.io/tiny-slider/demo/images/angle-left.png'>
             </div>
           </div>
-          <div class="col">
-            <div class='w-slider'>
+          <div class="col-10">
+            <div id='Otherslider'>
               <?php fetchWishlist(); ?>
             </div>
           </div>
           <div class='col-1 align-self-center'>
-            <div class='next' id='w-nextButton' aria-controls='customize' tabindex='-1' data-controls='next'>
+            <div class='next' id='wnextButton' aria-controls='customize' tabindex='-1' data-controls='next'>
               <img src='https://ganlanyuan.github.io/tiny-slider/demo/images/angle-right.png'>
             </div>
           </div>
@@ -606,7 +606,7 @@ function fetchWishlist(){
   <script src="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.2/min/tiny-slider.js"></script>
   <script>
   var slider = tns({
-    container: '.my-slider',
+    container: '#my-slider',
     items: 1,
     nav: false,
     prevButton: '#prevButton',
@@ -631,12 +631,12 @@ function fetchWishlist(){
     }
   });
 
-  var otherSlider = tns({
-    container: '.w-slider',
+  var slider = tns({
+    container: '#Otherslider',
     items: 1,
     nav: false,
-    prevButton: '#w-prevButton',
-    nextButton: '#w-nextButton',
+    prevButton: '#wprevButton',
+    nextButton: '#wnextButton',
     responsive: {
       600: {
         items: 2,
