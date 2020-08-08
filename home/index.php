@@ -305,20 +305,19 @@ function fetchWishlist(){
 
         <br>
         <div class='row'>
-            <div class='col-1'></div>
-            <h1 class="col h3 mb-4 text-gray-800 poppins">My Library
+            <h1 class="col offset-1 h3 mb-4 text-gray-800 poppins">My Library
               <img class='add' src='/media/plus.svg' data-toggle="modal" data-target="#addModal">
             </h1>
         </div>
 
-        <div class='row no-gutters'>
+        <div class='row no-gutters mh-225'>
 
           <div class='col-1 align-self-center'>
             <div class='prev' id='prevButton' aria-controls='customize' tabindex="-1" data-controls='prev'>
               <img src='https://ganlanyuan.github.io/tiny-slider/demo/images/angle-left.png'>
             </div>
           </div>
-          <div class="col-10">
+          <div class="col-10 align-self-center" id='libraryCarousel'>
             <div id='my-slider'>
               <?php fetchLibrary(); ?>
             </div>
@@ -339,20 +338,19 @@ function fetchWishlist(){
 
           <!-- Wishlist -->
         <div class='row'>
-          <div class='col-1'></div>
-          <h1 class="col h3 mb-4 text-gray-800 poppins">My Wishlist
+          <h1 class="col offset-1 h3 mb-4 text-gray-800 poppins">My Wishlist
             <img class='add' src='/media/plus.svg' data-toggle="modal" data-target="#wishlistModal">
          </h1>
         </div>
 
-        <div class='row no-gutters'>
+        <div class='row no-gutters mh-225'>
 
           <div class='col-1 align-self-center'>
             <div class='prev' id='wprevButton' aria-controls='customize' tabindex="-1" data-controls='prev'>
               <img src='https://ganlanyuan.github.io/tiny-slider/demo/images/angle-left.png'>
             </div>
           </div>
-          <div class="col-10">
+          <div class="col-10 align-self-center" id='wishlistCarousel'>
             <div id='Otherslider'>
               <?php fetchWishlist(); ?>
             </div>
@@ -605,7 +603,7 @@ function fetchWishlist(){
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.2/min/tiny-slider.js"></script>
   <script>
-  var slider = tns({
+  var oslider = tns({
     container: '#my-slider',
     items: 1,
     nav: false,
@@ -656,6 +654,19 @@ function fetchWishlist(){
       }
     }
   });
+
+  if ( $('#Otherslider > div').length === 0){
+    $('#wprevButton').hide();
+    $('#wnextButton').hide();
+    $('#wishlistCarousel').append('<p class="text-center h5"><i>No Books In My Wishlist</i></p>')
+
+  }
+
+  if ( $('#my-slider > div').length === 0){
+    $('#nextButton').hide();
+    $('#prevButton').hide();
+    $('#libraryCarousel').append('<p class="text-center h5"><i>No Books In My Library</i></p>')
+  }
 </script>
 </body>
 </html>

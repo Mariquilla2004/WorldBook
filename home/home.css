@@ -6,6 +6,10 @@
   font-size: 1.1rem;
 }
 
+.mh-225{
+  min-height: 225px;
+}
+
 .prev{
   text-align: center;
   cursor: pointer;
