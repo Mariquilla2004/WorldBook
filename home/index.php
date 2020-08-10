@@ -9,7 +9,6 @@
 //Require the connection to the database and the error handler.
 require( '../server-config/error-handler.php');
 require("../server-config/connect.php");
-require("../server-config/getMatches.php");
 
 //Fetch all books from this user, and display them as bootstrap cards.
 function fetchLibrary(){
@@ -112,19 +111,6 @@ function fetchWishlist(){
                     <span aria-hidden="true">&times;</span>
                   </button>
               </div>
-              <!--Book is already registered error toast-
-              <div class="toast toast-error" id="book_already_registered" data-delay='4000'>
-                <div class="toast-header toast-error">
-                  <img src='/media/alert-triangle.svg' class='mr-2'>
-                  <strong class="mr-auto">Book Already Exists</strong>
-                  <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="toast-body">
-                  Ups! You can't add the same book twice...
-                </div>
-              </div>-->
             </div>
           </div>
 
@@ -246,8 +232,8 @@ function fetchWishlist(){
                 </h6>
 
                 <!-- Notificate users about book matches. -->
-                <?php getMatches(); ?>
-                <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
+                <div id='alertsContent'>
+                </div>
               </div>
             </li>
 
@@ -256,17 +242,17 @@ function fetchWishlist(){
               <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-envelope fa-fw"></i>
                 <!-- Counter - Messages -->
-                <span class="badge badge-danger badge-counter"></span>
+                <span id='messagesBadge' class="badge badge-danger badge-counter"></span>
               </a>
               <!-- Dropdown - Messages -->
-              <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="messagesDropdown">
+              <div id='messagesMenu' class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="messagesDropdown">
                 <h6 class="dropdown-header">
                   Message Center
                 </h6>
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                    <div class="text-gray-500">No Messages</div>
-                </a>
-                <a class="dropdown-item text-center small text-gray-500" href="#">Read More messages.</a>
+
+                <div id='messagesContent'>
+                </div>
+                <a class="dropdown-item text-center small text-gray-500" href="chat">Read More messages.</a>
               </div>
             </li>
 
@@ -565,6 +551,8 @@ function fetchWishlist(){
   </script>
   <script>
 
+  $(document).ready(function(){
+
     //Get the 'trash' and the 'edit' icons.
     var trash = document.getElementsByClassName('trash');
     var edit = document.getElementsByClassName('edit');
@@ -574,6 +562,13 @@ function fetchWishlist(){
     iconAnimate(trash, 'trash-2.svg', 'trash-2-obscure.svg');
     iconAnimate(edit, 'edit-3.svg', 'edit-3-obscure.svg');
     iconAnimate(add, 'plus.svg', 'plus-obscure.svg');
+
+    getNotifications();
+    getAlerts();
+    setInterval(function(){getAlerts()}, 5000);
+    setInterval(function(){getNotifications();}, 5000);
+
+  });
 
     //Give color animation effect on icon hover.
     function iconAnimate(icon, original, dark){
@@ -593,12 +588,103 @@ function fetchWishlist(){
       });
     }
 
-    //Display number of notifications in Alerts Center.
-    if (notificationNumber -1 == 0){
-      $('#alertsBadge').text('');
-    }else{
-      $('#alertsBadge').text(notificationNumber -1);
+    //Display number of notifications.
+    function notification(a,b){
+      var notificationNumber= $(a).length;
+      if (notificationNumber == 0){
+        $(b).text('');
+      }else{
+        $(b).text(notificationNumber);
+      }
     }
+
+
+    function getNotifications(){
+      $.ajax({
+        type: 'POST',
+        url: 'chat/action.php',
+        data: {action: 'unread', timeOffset: -new Date().getTimezoneOffset()/60},
+        success: function(r){
+
+          if(r != 'No New Messages'){
+            r_obj = JSON.parse(r);
+            $('#messagesContent').text('');
+
+            for (var i=0; i<r_obj.length; i++){
+              var messageHTML = '<a class="m dropdown-item d-flex align-items-center" id="'+r_obj[i].from+'" href="#">'+
+                                              '<div class="mr-3">'+
+                                                '<div class="icon-circle">'+
+                                                  '<img class="rounded-circle img-fluid img-profile" src="/media/avatar1.jpeg">'+
+                                                '</div>'+
+                                              '</div>'+
+                                              '<div class="openSans400">'+
+                                                  decode(r_obj[i].from)+
+                                                  ' <span class="text-success poppins">(<span class="messageCounter">1</span>)</span>'+' '+
+                                                '<span class="small text-gray-500 text-left">'+
+                                                  r_obj[i].sent_at+
+                                                '</span>'+
+                                                '<div class="poppins text-14">'+
+                                                  r_obj[i].message+
+                                                '</div>'+
+                                              '</div>'+
+                                            '</a>';
+              if($('.m').length == 0 || $('#'+r_obj[i].from).length == 0){
+
+                  $('#messagesContent').append(messageHTML);
+                  notification('#messagesContent > a', '#messagesBadge');
+
+              } else if($('.m').length > 0){
+
+                $('.m').each(function(){
+
+                  if($(this).attr('id') == r_obj[i].from){
+                    var n = +($(this).find('.messageCounter').text());
+                    $(this).find('.messageCounter').text(n+1);
+                  }
+
+                });
+              }
+            }
+
+          } else if(r=='No New Messages'){
+          $('#messagesContent').html("<a class='dropdown-item d-flex align-items-center' href='#'><div class='text-gray-500'>No Messages</div></a>");
+
+          }
+        }
+
+      });
+    }
+
+    $('#messagesContent').on('click', '.m', function(){
+      $.ajax({
+          type: 'POST',
+          url: 'chat/action.php',
+          data: {action:'changeUser', user: $(this).attr('id')},
+          success: function(){
+            window.location='chat';
+          }
+      });
+    });
+
+    //Notificate stuff.
+    function getAlerts(){
+      $.ajax({
+        type: 'POST',
+        url: '/server-config/getMatches.php',
+        data: {timeOffset: -new Date().getTimezoneOffset()/60},
+        success: function(r){
+          $('#alertsContent').html(r);
+          notification('#alertsContent > a', '#alertsBadge');
+        }
+      })
+    }
+
+    function decode(str) {
+      return decodeURIComponent(atob(str).split('').map(function (c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+      }).join(''));
+    }
+
   </script>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.2/min/tiny-slider.js"></script>

@@ -1,18 +1,21 @@
 <?php
-
+require("connect.php");
+session_start();
   function getMatches(){
 
     //Get the PDO connection.
     $pdo= getConn();
 
     //Now, get the books!
-    $query='SELECT title, owner, requester, found_at FROM matches WHERE owner = ? OR requester= ? ORDER BY found_at';
+    $query='SELECT title, owner, requester, found_at FROM matches WHERE owner = ? OR requester= ? ORDER BY found_at DESC';
     $stmt= $pdo->prepare($query);
     $stmt->execute([$_SESSION['name'], $_SESSION['name']]);
 
     while($result= $stmt->fetch(PDO::FETCH_ASSOC)){
 
       $dt= new DateTime($result['found_at']);
+      $hours = $_POST['timeOffset'];
+      $localdt = $dt->add(new DateInterval("PT{$hours}H"));
 
       //Display different notification messages for user's owned books vs requested books.
       if ($result['requester'] == $_SESSION['name']){
@@ -24,7 +27,7 @@
                   </div>
                 </div>
                 <div>
-                  <div class="small text-gray-500 text-left">'. $dt->format('M j g:i A') .'</div>
+                  <div class="small text-gray-500 text-left">'. $localdt->format('M j g:i A') .'</div>
                   <span class="font-weight-bold">'. $result['owner'] .'</span> has got <span class="font-weight-bold">'. $result['title'] .'!</span>
                 </div>
               </a>';
@@ -38,11 +41,13 @@
                   </div>
                 </div>
                 <div>
-                  <div class="small text-gray-500">'. $dt->format('M j g:i A') .'</div>
+                  <div class="small text-gray-500">'. $localdt->format('M j g:i A') .'</div>
                   <span class="font-weight-bold">'. $result['requester'] .'</span> wants to read <span class="font-weight-bold">'. $result['title'] .'!</span>
                 </div>
               </a>';
       }
     }
   }
+
+  getMatches();
 ?>
