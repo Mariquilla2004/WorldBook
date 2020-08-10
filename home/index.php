@@ -18,7 +18,7 @@ function fetchLibrary(){
   $pdo= getConn();
 
   //Now, get the books!
-  $query='SELECT title FROM library WHERE owner_id = ?';
+  $query='SELECT title, author FROM library WHERE owner_id = ?';
   $stmt= $pdo->prepare($query);
   $stmt->execute([$_SESSION['name']]);
 
@@ -27,12 +27,12 @@ function fetchLibrary(){
 
     echo "<div>
             <div class='card bookCard'>
-              <p class='card-header'>" . $result['title'] . "</p>
-              <div class='text-right' style='margin-top: auto;'>
+              <p class='card-header' id=".base64_encode($result['title']).">" . $result['title'] . "</p>
+              <div class='text-right' style='margin-top: auto;' id=".base64_encode($result['author']).">
                 <a href='#editBook' class='nounderline' role='button' data-toggle='modal'>
                   <img class='edit pr-2' src='/media/edit-3.svg'>
                 </a>
-                <a href='#deleteBook' class='nounderline' role='button' data-toggle='modal'>
+                <a href='#deleteBook' class='nounderline deleteFromLibrary' role='button' data-toggle='modal'>
                   <img class='trash pr-2' src='/media/trash-2.svg'>
                 </a>
               </div>
@@ -48,7 +48,7 @@ function fetchWishlist(){
   $pdo= getConn();
 
   //Select the wanted books from the db.
-  $query='SELECT title FROM wishlist WHERE requester_id = ?';
+  $query='SELECT title, author FROM wishlist WHERE requester_id = ?';
   $stmt= $pdo->prepare($query);
   $stmt->execute([$_SESSION['name']]);
 
@@ -57,12 +57,12 @@ function fetchWishlist(){
 
       echo "<div>
               <div class='card bookCard'>
-                <p class='card-header'>" . $result['title'] . "</p>
-                <div class='text-right' style='margin-top: auto;'>
+                <p class='card-header' id=".base64_encode($result['title']).">" . $result['title'] . "</p>
+                <div class='text-right' style='margin-top: auto;' id=".base64_encode($result['author']).">
                   <a href='#editBook' class='nounderline' role='button' data-toggle='modal'>
                     <img class='edit pr-2' src='/media/edit-3.svg'>
                   </a>
-                  <a href='#deleteBook' class='nounderline' role='button' data-toggle='modal'>
+                  <a href='#deleteBook' class='nounderline deleteFromWishlist' role='button' data-toggle='modal'>
                     <img class='trash pr-2' src='/media/trash-2.svg'>
                   </a>
                 </div>
@@ -497,7 +497,7 @@ function fetchWishlist(){
         <!-- Modal footer -->
         <div class="modal-footer openSans400">
           <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Not really</button>
-          <form action='./deleteBook/index.php' method='post'><button type="submit"class="btn btn-danger" disabled>Yep</button></form>
+          <button type="submit"class="btn btn-danger delete">Yep</button>
         </div>
 
       </div>
@@ -665,8 +665,45 @@ function fetchWishlist(){
   if ( $('#my-slider > div').length === 0){
     $('#nextButton').hide();
     $('#prevButton').hide();
-    $('#libraryCarousel').append('<p class="text-center h5"><i>No Books In My Library</i></p>')
+    $('#libraryCarousel').append('<p class="text-center h5"><i>No Books In My Library</i></p>');
   }
+
+  $('.delete').click(function(){
+    $.post(
+      'deleteBook/index.php',
+      {
+        action: "delete",
+      },
+      function(){
+        location.reload();
+        return false;
+      }
+    );
+  });
+
+  $('.deleteFromLibrary').click(function(){
+    $.post(
+      'deleteBook/index.php',
+      {
+        action: "setDelete",
+        from: 'library',
+        author: $(this).parent().attr('id'),
+        title: $(this).parent().siblings('p').attr('id')
+      },
+    );
+  });
+
+  $('.deleteFromWishlist').click(function(){
+    $.post(
+      'deleteBook/index.php',
+      {
+        action: "setDelete",
+        from: 'wishlist',
+        author: $(this).parent().attr('id'),
+        title: $(this).parent().siblings('p').attr('id')
+      },
+    );
+  });
 </script>
 </body>
 </html>
@@ -680,5 +717,4 @@ function fetchWishlist(){
             document.getElementById('book_already_registered').classList.add('show');
           </script>";
   }
-
 ?>
