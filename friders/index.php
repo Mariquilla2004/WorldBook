@@ -216,7 +216,6 @@ session_start();
 
           <div class='col-sm-4 align-self-end'>
             <div id="search">
-              <div class='search-icon' id='search-icon'></div>
               <input id='search-text' placeholder="Search Friders" autocomplete="off" />
             </div>
           </div>
@@ -279,25 +278,11 @@ session_start();
       setInterval(function(){getAlerts()}, 5000);
       setInterval(function(){getNotifications();}, 5000);
 
-      $('#search-text').on("focusin", function(){
-        $(this).prev().css('background', 'url(/media/arrow-right.svg) no-repeat');
-      });
-
-      $("#search-text").on("focusout", function(){
-        $(this).prev().css('background', 'url(/media/search.svg) no-repeat');
-      });
-
-      $("#search").on("click", "#search-icon", function(){
-        $.ajax({
-          type: 'POST',
-          url: 'friders.php',
-          data: {action: 'search', q: $('#search-text').val()},
-          success: function(r){
-            displayUsers(r, 'No Results :/');
-          }
-
-        });
-      });
+      iconAnimate('.addFrider', 'user-plus.svg', 'user-plus-obscure.svg');
+      iconAnimate('.message', 'message-circle.svg', 'message-circle-obscure.svg');
+      iconAnimate('.library', 'book.svg', 'book-obscure.svg');
+      iconAnimate('.profile', 'user.svg', 'user-obscure.svg');
+      iconAnimate('.dropdownUser', 'chevron-down.svg', 'chevron-down-obscure.svg');
 
       $('#search').keyup(function(k){
           $.ajax({
@@ -311,16 +296,36 @@ session_start();
           });
       });
 
-      $('.ma img').on('click', function(){
+      $('#userCardRow').on('click', '.ma', function(){
         var adduser = $(this).attr('src') == '/media/user-plus.svg';
         if (adduser){
           $.ajax({
             type: 'POST',
             url: 'friders.php',
-            data: {action: 'adduser', u: $(this).atrr('id')}
+            data: {action: 'addFrider', u: $(this).attr('id')},
+            success: function(r){
+              if (r== 'success'){
+                $(this).attr('src', '/media/message-circle.svg');
+              }
+            }
+          });
+
+          $(this).attr('src', '/media/message-circle.svg');
+        } else {
+
+          $.ajax({
+            type: 'POST',
+            url: '/home/chat/action.php',
+            data: {action: 'changeUser', user: $(this).attr('id')},
+            success: function(r){
+              window.location = '/home/chat';
+            }
           });
         }
       });
+
+      $('#userCardRow').on('click', '.profile', function(){window.location})
+
 
     });
 
@@ -356,6 +361,7 @@ session_start();
         for (var i=0; i< Object.keys(response).length; i++){
 
           var isFrider = response[i].isFrider ? 'message-circle' : 'user-plus';
+          var isFriderIcon = response[i].isFrider ? 'message' : 'addFrider';
 
           $('#userCardRow').append(
             "<div class='col-lg-5 m-3'>                                                                      " +
@@ -368,12 +374,12 @@ session_start();
 
             "     <div class='col text-center align-self-center'>                                            " +
             "       <h6 class='mb-0 poppins'>                                                                " +
-            "         " + response[i].name + "                                                               " +
+            "         " + decode(response[i].name) + "                                                       " +
             "         <span class='ml-2'>                                                                    " +
-            "           <img class='f-icon' src='/media/user.svg' />                                         " +
-            "           <img class='f-icon' src='/media/book.svg' />                                         " +
-            "           <img id=" + response[i].name + "class='f-icon ma' src='/media/" + isFrider + ".svg' />                            " +
-            "           <img src='/media/chevron-down.svg' />                                                " +
+            "           <img class='f-icon profile' src='/media/user.svg' />                                 " +
+            "           <img class='f-icon library' src='/media/book.svg' />                          " +
+            "           <img id=" +response[i].name+" class='f-icon ma " +isFriderIcon+ "' src='/media/" +isFrider+ ".svg' />" +
+            "           <img src='/media/chevron-down.svg' class='dropdownUser'/>                                                " +
             "         </span>                                                                                " +
             "       </h6>                                                                                    " +
             "     </div>                                                                                     " +
@@ -476,6 +482,21 @@ session_start();
       return decodeURIComponent(atob(str).split('').map(function (c) {
         return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
       }).join(''));
+    }
+
+    //Give color animation effect on icon hover.
+    function iconAnimate(icon, original, dark){
+
+
+        //On mouse over, change icon color to a darker one.
+        $('#userCardRow').on('mouseover', icon, function(){
+          $(this).attr("src", '/media/' + dark);
+        });
+
+        //And on mouse out, go back to the original color.
+        $('#userCardRow').on('mouseout', icon, function(){
+          $(this).attr("src", '/media/' + original);
+        })
     }
   </script>
 

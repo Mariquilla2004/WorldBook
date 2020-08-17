@@ -36,12 +36,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST)){
             //Set "isFrider" value of the response array using isFrider().
             //Also don't include the current user's name into the results array.
             if (isFrider($row['name'])){
-              $response[] = array("name" => $row['name'],
+              $response[] = array("name" => base64_encode($row['name']),
                               "pic_url" => '/media/avatar1.jpeg',
                               "isFrider" => true
                             );
             }else if($row['name'] != $_SESSION['name']) {
-              $response[] = array("name" => $row['name'],
+              $response[] = array("name" => base64_encode($row['name']),
                               "pic_url" => '/media/avatar1.jpeg',
                               "isFrider" => false
                             );
@@ -67,13 +67,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST)){
         while ($row= $stmt->fetch(PDO::FETCH_ASSOC)){
 
           if ($row['user1'] == $_SESSION['name']){
-            $response[] = array("name" => $row['user2'],
+            $response[] = array("name" => base64_encode($row['user2']),
                             "pic_url" => '/media/avatar1.jpeg',
                             "isFrider" => true
                           );
 
           } else if ($row['user2'] == $_SESSION['name']){
-            $response[] = array("name" => $row['user1'],
+            $response[] = array("name" => base64_encode($row['user1']),
                             "pic_url" => '/media/avatar1.jpeg',
                             "isFrider" => true
                           );
@@ -86,6 +86,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST)){
       } else {
         echo "No Results";
       }
+
+      break;
+
+    //Add users to friders.
+    case 'addFrider':
+
+    $user2 = base64_decode($_POST['u']);
+    $stmt= $pdo->prepare('INSERT INTO friders (user1, user2) VALUES (?, ?)');
+    $stmt->execute([$_SESSION['name'], $user2]);
+
+    echo 'success';
+
 
       break;
   }
