@@ -296,22 +296,27 @@ session_start();
           });
       });
 
-      $('#userCardRow').on('click', '.ma', function(){
-        var adduser = $(this).attr('src') == '/media/user-plus.svg';
-        if (adduser){
+      $('#userCardRow').on('click', '.addFrider', function(){
+        console.log('hi!');
+
           $.ajax({
             type: 'POST',
             url: 'friders.php',
             data: {action: 'addFrider', u: $(this).attr('id')},
             success: function(r){
               if (r== 'success'){
-                $(this).attr('src', '/media/message-circle.svg');
+              }
+              else {
+                console.log('hoho');
               }
             }
           });
 
+          $(this).removeClass("addFrider").addClass("message");
           $(this).attr('src', '/media/message-circle.svg');
-        } else {
+       });
+
+        $('#userCardRow').on('click', '.message', function(){
 
           $.ajax({
             type: 'POST',
@@ -321,7 +326,7 @@ session_start();
               window.location = '/home/chat';
             }
           });
-        }
+
       });
 
       $('#userCardRow').on('click', '.profile', function(){window.location})

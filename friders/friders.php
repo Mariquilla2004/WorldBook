@@ -115,9 +115,9 @@ function isFrider($name){
 
   if ($name != $_SESSION['name']){
     $pdo= getConn();
-    $query='SELECT COUNT(*) FROM friders WHERE user1= ? OR user2= ?';
+    $query='SELECT COUNT(*) FROM friders WHERE (user1= ? AND user2= ?) OR (user2= ? AND user1= ?)';
     $stmt = $pdo->prepare($query);
-    $stmt->execute([$name, $name]);
+    $stmt->execute([$name, $_SESSION['name'], $name, $_SESSION['name']]);
     $nRows = $stmt->fetchColumn();
   }else if($name == $_SESSION['name']){
     $nRows = 0;
