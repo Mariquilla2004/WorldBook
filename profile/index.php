@@ -446,7 +446,7 @@ function validate($data) {
        $.ajax({
          type: 'POST',
          url: '/home/chat/action.php',
-         data: {action: 'changeUser', user: '<?php echo validate($_GET['u']); ?>'},
+         data: {action: 'changeUser', user: '<?php echo base64_encode(validate($_GET['u'])); ?>'},
          success: function(){
            window.location = '/home/chat';
          }
