@@ -1,15 +1,13 @@
 <?php
+//Require the connection to the database and the error handler.
+require( '../server-config/error-handler.php');
+require("../server-config/getMatches.php");
+
 //Start the session.
-  session_start();
   if( !isset($_SESSION['loggedin']) ){
     header('Location: /auth/logIn');
     exit();
   }
-
-//Require the connection to the database and the error handler.
-require( '../server-config/error-handler.php');
-require("../server-config/connect.php");
-require("../server-config/getMatches.php");
 
 if (!isset($_GET['u'])){
   $_GET['u'] = $_SESSION['name'];
