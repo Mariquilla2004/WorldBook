@@ -9,7 +9,6 @@
 //Require the connection to the database and the error handler.
 require( '../server-config/error-handler.php');
 require("../server-config/connect.php");
-require("../server-config/getMatches.php");
 
 ?>
 <!DOCTYPE html>
@@ -23,7 +22,7 @@ require("../server-config/getMatches.php");
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>WorldBook | Home</title>
+  <title>WorldBook | Profile</title>
 
   <!-- Custom fonts, js and css for this template-->
     <script src="https://kit.fontawesome.com/6838ece04b.js" crossorigin="anonymous"></script>
