@@ -21,18 +21,40 @@
 
 .messageBanner{
   color: #858796;
+  background: url('/media/message-circle-1px.svg') no-repeat 10px 6px;
   font-size: 16px;
+  padding: 5px 10px 5px 40px;
   font-family: 'Open Sans', sans-serif;
   border: 0.08rem solid #40abf3;
   border-radius: 0.7rem;
 
-  transition: border 0.25s, color 0.5s;
+  transition: border 0.25s, color 0.5s, background 0.5s;
 }
 
 .messageBanner:hover{
   border: 0.08rem solid #0e87d9;
   color: #35363c;
   cursor: pointer;
+  background: url('/media/message-circle-1px-obscure.svg') no-repeat 10px 6px;
+}
+
+.editBanner{
+  color: #858796;
+  background: url('/media/edit-3-1px.svg') no-repeat 10px 6px;
+  font-size: 16px;
+  padding: 5px 10px 5px 40px;
+  font-family: 'Open Sans', sans-serif;
+  border: 0.08rem solid #858796;
+  border-radius: 0.7rem;
+
+  transition: border 0.25s, color 0.5s, background 0.5s;
+}
+
+.editBanner:hover{
+  color: #35363c;
+  cursor: pointer;
+  background: url('/media/edit-3-1px-obscure.svg') no-repeat 10px 6px;
+  border: 0.08rem solid #35363c;
 }
 
 .img-profile {

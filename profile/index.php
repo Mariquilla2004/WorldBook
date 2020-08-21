@@ -160,7 +160,7 @@ function validate($data) {
 
        <!-- Nav Item - Pages Collapse Menu -->
        <li class="nav-item">
-         <a class="nav-link collapsed" href="">
+         <a class="nav-link collapsed" href="/friders">
            <i class="fas fa-grin-stars"></i>
            <span>Friders</span>
          </a>
@@ -280,7 +280,7 @@ function validate($data) {
                </a>
                <!-- Dropdown - User Information -->
                <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                 <a class="dropdown-item" href="/home/profile">
+                 <a class="dropdown-item" href="/profile">
                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                    Profile
                  </a>
@@ -308,8 +308,10 @@ function validate($data) {
           <img class='rounded-circle img-fluid img-profile mt-2' src='/media/avatar1.jpeg' />
         </div>
           <div class='col mt-2 p'>
-            <p class='h2 text-black openSans400'><?php echo validate($_GET['u']); ?>
-              <span id='messageBanner' class='messageBanner align-middle p-1 ml-4'><img src='/media/message-circle-1px.svg' /> Message</span>
+            <p class='h2 text-black openSans400'>
+              <?php echo validate($_GET['u']);
+                    echo $_GET['u'] == $_SESSION['name'] ? "<span id='editBanner' class='editBanner align-middle ml-4'>Edit Profile</span>" : "<span id='messageBanner' class='messageBanner align-middle  ml-4'> Message</span>";
+              ?>
             </p>
             <br>
             <p class='text-black poppins'>3 <span class='poppins300 mr-4'>Friders</span>5 <span class='poppins300'>Books in Library</span></p>
@@ -452,6 +454,10 @@ function validate($data) {
            window.location = '/home/chat';
          }
        });
+     });
+
+     $('#editBanner').click(function(){
+       window.location = '/home/settings'
      });
 
      //Display number of notifications.

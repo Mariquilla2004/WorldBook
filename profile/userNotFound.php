@@ -68,7 +68,7 @@ require("../server-config/connect.php");
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
       <!-- Sidebar - Brand -->
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="#">
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/home">
         <div class="sidebar-brand-icon rotate-n-15">
           <img src="../media/WB1.png" alt="logo" width="40" height="40">
         </div>
@@ -80,7 +80,7 @@ require("../server-config/connect.php");
 
       <!-- Nav Item - Dashboard -->
       <li class="nav-item">
-        <a class="nav-link" href="#">
+        <a class="nav-link" href="/home">
           <i class="fas fa-book"></i>
           <span>My Bookshelf</span></a>
       </li>
@@ -90,7 +90,7 @@ require("../server-config/connect.php");
 
       <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-        <a class="nav-link collapsed" href="#">
+        <a class="nav-link collapsed" href="/friders">
           <i class="fas fa-grin-stars"></i>
           <span>Friders</span>
         </a>
@@ -199,7 +199,7 @@ require("../server-config/connect.php");
 
                 <div id='messagesContent'>
                 </div>
-                <a class="dropdown-item text-center small text-gray-500" href="chat">Read More messages.</a>
+                <a class="dropdown-item text-center small text-gray-500" href="/home/chat">Read More messages.</a>
               </div>
             </li>
 
@@ -209,15 +209,15 @@ require("../server-config/connect.php");
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="mr-2 d-none d-lg-inline text-gray-600 small" id= 'userName'><?php echo $_SESSION['name'];?></span>
-                <img class= 'img-profile rounded-circle' src= '../media/avatar1.jpeg'></img>
+                <img class= 'img-profile rounded-circle' src= '/media/avatar1.jpeg'></img>
               </a>
               <!-- Dropdown - User Information -->
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                <a class="dropdown-item" href="profile">
+                <a class="dropdown-item" href="/profile">
                   <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                   Profile
                 </a>
-                <a class="dropdown-item" href="settings">
+                <a class="dropdown-item" href="/home/settings">
                   <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                   Settings
                 </a>
