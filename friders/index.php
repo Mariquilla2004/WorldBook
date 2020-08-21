@@ -279,7 +279,7 @@ session_start();
       setInterval(function(){getNotifications();}, 5000);
 
       iconAnimate('.addFrider', 'user-plus.svg', 'user-plus-obscure.svg');
-      iconAnimate('.message', 'message-circle.svg', 'message-circle-obscure.svg');
+      iconAnimate('.message', 'message-circle-20x20.svg', 'message-circle-obscure.svg');
       iconAnimate('.profile', 'user.svg', 'user-obscure.svg');
       iconAnimate('.dropdownUser', 'chevron-down.svg', 'chevron-down-obscure.svg');
 
@@ -363,7 +363,7 @@ session_start();
 
         for (var i=0; i< Object.keys(response).length; i++){
 
-          var isFrider = response[i].isFrider ? 'message-circle' : 'user-plus';
+          var isFrider = response[i].isFrider ? 'message-circle-20x20' : 'user-plus';
           var isFriderIcon = response[i].isFrider ? 'message' : 'addFrider';
 
           $('#userCardRow').append(
