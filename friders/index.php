@@ -66,7 +66,7 @@ session_start();
 
       <!-- Nav Item - Pages Collapse Menu -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="">
+        <a class="nav-link collapsed" href="#">
           <i class="fas fa-grin-stars"></i>
           <span>Friders</span>
         </a>
@@ -186,7 +186,7 @@ session_start();
               </a>
               <!-- Dropdown - User Information -->
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                <a class="dropdown-item" href="/home/profile">
+                <a class="dropdown-item" href="/profile">
                   <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                   Profile
                 </a>
@@ -280,7 +280,6 @@ session_start();
 
       iconAnimate('.addFrider', 'user-plus.svg', 'user-plus-obscure.svg');
       iconAnimate('.message', 'message-circle.svg', 'message-circle-obscure.svg');
-      iconAnimate('.library', 'book.svg', 'book-obscure.svg');
       iconAnimate('.profile', 'user.svg', 'user-obscure.svg');
       iconAnimate('.dropdownUser', 'chevron-down.svg', 'chevron-down-obscure.svg');
 
@@ -297,7 +296,6 @@ session_start();
       });
 
       $('#userCardRow').on('click', '.addFrider', function(){
-        console.log('hi!');
 
           $.ajax({
             type: 'POST',
@@ -329,7 +327,7 @@ session_start();
 
       });
 
-      $('#userCardRow').on('click', '.profile', function(){window.location})
+      $('#userCardRow').on('click', '.profile', function(){window.location='/profile?u='+decode($(this).attr('id'));})
 
 
     });
@@ -381,10 +379,9 @@ session_start();
             "       <h6 class='mb-0 poppins'>                                                                " +
             "         " + decode(response[i].name) + "                                                       " +
             "         <span class='ml-2'>                                                                    " +
-            "           <img class='f-icon profile' src='/media/user.svg' />                                 " +
-            "           <img class='f-icon library' src='/media/book.svg' />                          " +
+            "           <img id='"+response[i].name+"' class='f-icon profile' src='/media/user.svg' />                                 " +
             "           <img id=" +response[i].name+" class='f-icon ma " +isFriderIcon+ "' src='/media/" +isFrider+ ".svg' />" +
-            "           <img src='/media/chevron-down.svg' class='dropdownUser'/>                                                " +
+            "           <img src='/media/chevron-down.svg' class='dropdownUser'/>                            " +
             "         </span>                                                                                " +
             "       </h6>                                                                                    " +
             "     </div>                                                                                     " +
