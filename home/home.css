@@ -38,3 +38,6 @@
 .text-14{
   font-size: 14px;
 }
+.add:hover{
+  cursor:pointer;
+}
