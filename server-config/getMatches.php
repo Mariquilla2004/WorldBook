@@ -20,7 +20,7 @@ session_start();
       //Display different notification messages for user's owned books vs requested books.
       if ($result['requester'] == $_SESSION['name']){
 
-        echo '<a class="dropdown-item d-flex align-items-center" href="#">
+        echo '<a class="dropdown-item d-flex align-items-center" href="/profile?u=' . $result['owner'] .'">
                 <div class="mr-3">
                   <div class="icon-circle" style="background-color: #40abf3;">
                     <i style="color: #ffff;"class="fas fa-book-medical"></i>
