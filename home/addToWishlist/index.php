@@ -1,11 +1,11 @@
 <?php
+//Require the connection to the database and the error handler.
+require( '../../server-config/error-handler.php');
+require("../../server-config/connect.php");
+require("../../auth/checkSession.php");
 
 //Require the connection to the database.
-require("../../server-config/connect.php");
 $pdo= getConn();
-
-//Also we'll need the session to get user ids.
-session_start();
 
 //Get the input submitted by the user, AND the user's id.
 $title = validate($_POST['title']);

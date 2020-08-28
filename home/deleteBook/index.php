@@ -2,7 +2,7 @@
 //Require the connection to the database.
 require("../../server-config/connect.php");
 require("../../server-config/error-handler.php");
-session_start();
+require("../../auth/checkSession.php");
 
 $pdo= getConn();
 

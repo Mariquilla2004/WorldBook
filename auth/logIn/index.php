@@ -1,5 +1,7 @@
 <?php
-session_start();
+require( '../../server-config/error-handler.php');
+require("../../server-config/connect.php");
+require("../checkSession.php");
 
 //In case the user is already logged in, redirect him/her to /home.
 if (isset($_SESSION['loggedin'])){
@@ -48,7 +50,7 @@ if (isset($_SESSION['loggedin'])){
                         <h3 class="login-heading mb-4">Welcome back!</h3>
                         <form action='./index.php' method='POST'>
                           <div class="form-label-group">
-                            <input type="email" id="inputEmail" class="form-control" placeholder="Email address" name='email'required autofocus>
+                            <input type="email" id="inputEmail" class="form-control" placeholder="Email address" name='email' value="" required autofocus>
                             <label for="inputEmail">Email address</label>
                             <small class= 'text text-danger' id= 'emailError'></small>
                           </div>
@@ -59,8 +61,8 @@ if (isset($_SESSION['loggedin'])){
                             <small class= 'text text-danger' id= 'passError'></small>
                           </div>
                           <div class="custom-control custom-checkbox mb-3">
-                            <input type="checkbox" class="custom-control-input" id="customCheck1">
-                            <label class="custom-control-label" for="customCheck1">Remember password</label>
+                            <input type="checkbox" class="custom-control-input" id="remember_me" name='remember_me'>
+                            <label class="custom-control-label" for="remember_me" value="1">Remember Me</label>
                           </div>
                           <button class="btn btn-lg btn-primary btn-block text-uppercase" id="submit">Log In</button>
                           <br>
@@ -93,13 +95,34 @@ if (isset($_SESSION['loggedin'])){
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
     crossorigin="anonymous"></script>
     <script src= 'logIn.js'></script>
+    <script>
+      $('#inputEmail').val(getCookie('remember_me'));
+      function setCookie(cname, cvalue, exdays) {
+        var d = new Date();
+        d.setTime(d.getTime() + (exdays*24*60*60*1000));
+        var expires = "expires="+ d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+      }
+
+      function getCookie(cname) {
+        var name = cname + "=";
+        var decodedCookie = decodeURIComponent(document.cookie);
+        var ca = decodedCookie.split(';');
+        for(var i = 0; i <ca.length; i++) {
+          var c = ca[i];
+          while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+          }
+          if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+          }
+        }
+        return "";
+      }
+    </script>
     </body>
 </html>
 <?php
-
-//Require the database connection and the error handler file.
-require('../../server-config/error-handler.php');
-require('../../server-config/connect.php');
 
 //Declare some variables we will be using.
 $login_email = $login_password = "";
@@ -129,6 +152,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
   //The password the user has submitted equals the one we've got from our query.
     if ($login_password == $row['password']){
+
+      //Set a cookie to remember the user's email for a year.
+      $year = time() + 31536000;
+      $week = time() + 604800;
+      echo "<script>setCookie('remember_me', '" . $login_email . "', '" . $year . "');</script>";
+      echo "<script>setCookie('login_sessione', '" . $login_email ."','" . $week . "')</script>";
+      echo "<script>setCookie('login_sessionp', '" . password_hash($row['password'], PASSWORD_DEFAULT) . "', '" . $week ."');</script>";
 
       //Set some sessions to identificate the new logged user.
       $_SESSION['loggedin'] = true;

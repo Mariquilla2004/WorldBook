@@ -1,5 +1,7 @@
 <?php
-session_start();
+require( '../../server-config/error-handler.php');
+require("../../server-config/connect.php");
+require("../checkSession.php");
 
 //In case the user is already logged in, redirect him/her to home.
 if (isset($_SESSION['loggedin'])){
@@ -137,14 +139,20 @@ if (isset($_SESSION['loggedin'])){
       return;
     }
   </script>
+  <script>
+    function setCookie(cname, cvalue, exdays) {
+      var d = new Date();
+      d.setTime(d.getTime() + (exdays*24*60*60*1000));
+      var expires = "expires="+ d.toUTCString();
+      document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    }
+
+  </script>
 
 </body>
 
 </html>
 <?php
-//Require the db connection file and the error handler file.
-require( '../../server-config/connect.php');
-require( '../../server-config/error-handler.php');
 
 //We only want to execute these lines when the user has submitted the form.
 if ($_SERVER['REQUEST_METHOD'] == 'POST'){
@@ -169,6 +177,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
       //After that, execute it, set $_SESSION variables, an if successfuly registered, redirect to home.
       $INSERT_stmt->execute([$uid, $username, $email, $password]);
+
+      //Set a cookie to remember the user's email for a year.
+      $year = time() + 31536000;
+      $week = time() + 604800;
+      echo "<script>setCookie('remember_me', '" . $email . "', '" . $year . "');</script>";
+      echo "<script>setCookie('login_sessione', '" . $email ."','" . $week . "')</script>";
+      echo "<script>setCookie('login_sessionp', '" . password_hash($password, PASSWORD_DEFAULT) . "', '" . $week ."');</script>";
 
       $_SESSION['loggedin'] = true;
       $_SESSION['name'] = $username;

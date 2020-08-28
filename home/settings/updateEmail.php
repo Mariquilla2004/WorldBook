@@ -1,7 +1,6 @@
 <?php
   //Require the reauthentication script.
   require("../../auth/reauthenticate/index.php");
-  session_start();
 
   //Redirect to log In page if the user isn't logged in.
   if( !isset($_SESSION['loggedin']) ){

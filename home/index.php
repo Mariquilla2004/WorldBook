@@ -1,14 +1,15 @@
 <?php
+//Require the connection to the database and the error handler.
+require( '../server-config/error-handler.php');
+require("../server-config/connect.php");
+require("../auth/checkSession.php");
+
 //Start the session.
-  session_start();
+  //session_start();
   if( !isset($_SESSION['loggedin']) ){
     header('Location: /auth/logIn');
     exit();
   }
-
-//Require the connection to the database and the error handler.
-require( '../server-config/error-handler.php');
-require("../server-config/connect.php");
 
 //Fetch all books from this user, and display them as bootstrap cards.
 function fetchLibrary(){

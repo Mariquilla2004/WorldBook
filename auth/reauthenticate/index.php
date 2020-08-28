@@ -3,7 +3,7 @@
 //Require the database connection and the error handler file.
 require('../../server-config/error-handler.php');
 require('../../server-config/connect.php');
-session_start();
+require("../../auth/checkSession.php");
 
 //In case the user is already logged in, redirect him/her to /home.
 if (!isset($_SESSION['loggedin'])){

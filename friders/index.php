@@ -2,6 +2,7 @@
 //Require the connection to the database and the error handler.
 require( '../server-config/error-handler.php');
 require("../server-config/connect.php");
+require("../auth/checkSession.php");
 
 session_start();
 

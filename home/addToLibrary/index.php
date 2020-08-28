@@ -1,15 +1,15 @@
 <?php
+//Require the connection to the database and the error handler.
+require( '../../server-config/error-handler.php');
+require("../../server-config/connect.php");
+require("../../auth/checkSession.php");
 
 //Redirect to login if not registered.
-session_start();
 if( !isset($_SESSION['loggedin']) ){
   header('Location: /auth/logIn');
   exit();
 }
 
-//Require the connection to the database and the error handler.
-require( '../../server-config/error-handler.php');
-require("../../server-config/connect.php");
 $pdo= getConn();
 
 //Get the input submitted by the user, AND the user's id.

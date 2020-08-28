@@ -2,7 +2,7 @@
   //Require the database connection and the error handler file.
   require('../../server-config/error-handler.php');
   require('../../server-config/connect.php');
-  session_start();
+  require('../../auth/checkSession.php');
 
   //Redirect to log In page if the user isn't logged in.
   if( !isset($_SESSION['loggedin']) ){

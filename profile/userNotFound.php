@@ -1,14 +1,14 @@
 <?php
+//Require the connection to the database and the error handler.
+require( '../server-config/error-handler.php');
+require("../server-config/connect.php");
+require('../auth/checkSession.php');
+
 //Start the session.
-  session_start();
   if( !isset($_SESSION['loggedin']) ){
     header('Location: /auth/logIn');
     exit();
   }
-
-//Require the connection to the database and the error handler.
-require( '../server-config/error-handler.php');
-require("../server-config/connect.php");
 
 ?>
 <!DOCTYPE html>

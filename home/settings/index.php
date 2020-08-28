@@ -2,8 +2,7 @@
 //Require the connection to the database and the error handler.
 require( '../../server-config/error-handler.php');
 require("../../server-config/connect.php");
-
-session_start();
+require("../../auth/checkSession.php");
 
   if( !isset($_SESSION['loggedin']) ){
     header('Location: /auth/logIn');

@@ -1,15 +1,14 @@
 <?php
+//Require the connection to the database and the error handler.
+require( '../../server-config/error-handler.php');
+require("../../server-config/connect.php");
+require("../../auth/checkSession.php");
 
   //Redirect to logIn page if user's not signed in.
-  session_start();
   if( !isset($_SESSION['loggedin']) ){
     header('Location: /auth/logIn');
     exit();
   }
-
-  //Require the connection to the database and the error handler.
-  require( '../../server-config/error-handler.php');
-  require("../../server-config/connect.php");
 
   //Get all POST values.
   $new_name= validate($_POST['username']);
