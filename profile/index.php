@@ -10,9 +10,6 @@ require("../auth/checkSession.php");
     exit();
   }
 
-//Require the connection to the database and the error handler.
-require( '../server-config/error-handler.php');
-require("../server-config/connect.php");
 
 if (!isset($_GET['u'])){
   $_GET['u'] = $_SESSION['name'];

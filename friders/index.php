@@ -4,7 +4,6 @@ require( '../server-config/error-handler.php');
 require("../server-config/connect.php");
 require("../auth/checkSession.php");
 
-session_start();
 
   if( !isset($_SESSION['loggedin']) ){
     header('Location: /auth/logIn');
