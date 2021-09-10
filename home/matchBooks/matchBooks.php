@@ -30,7 +30,7 @@ $stmt2= $pdo->prepare($query2);
 $stmt->execute();
 
 function getConn(){
-  $host= '192.168.1.15';
+  $host= 'localhost';
   $db_user= 'worldbook-server';
   $db_password= 'chocolateEsVida';
   $db_name= 'worldbook';
