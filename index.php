@@ -389,7 +389,7 @@ require("auth/checkSession.php");
             <div id="errormessage"></div>
 
 
-            <form role="form" class="contactForm openSans400" id="contactForm1" action="https://formsubmit.io/send/admin@worldbook.es"  method="POST" >
+            <form role="form" class="contactForm openSans400" id="contactForm1" action="https://formsubmit.co/admin@worldbook.es"  method="POST" >
               <div class="form-group">
                 <input type="text" name="name" class="form-control" id="name" placeholder="Your Name"
                   data-rule="minlen:4" data-msg="Please enter at least 4 chars" required/>
