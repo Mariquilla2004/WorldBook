@@ -1,23 +1,17 @@
 # WorldBook
 
-## About WorldBook
-WorldBook is a social network for books, designed to connect readers, facilitate book exchanges, and promote the joy of reading among young people.  
-Key Features:
-- Manage personal and borrowed books.
-- Connect with readers who share your preferences.
-- Contribute to a global self-managed library.
+WorldBook es un proyecto diseñado como una red social para libros que busca conectar lectores, promover el intercambio de libros y fomentar el hábito de lectura, especialmente entre los jóvenes.
 
-## Technologies Used
-- PHP
-- MySQL
-- HTML/CSS
+## Estado del Proyecto
+El proyecto estaba en desarrollo y en preparación para su fase piloto, con lanzamiento planificado para la primavera de 2020. Sin embargo, debido a las dificultades impuestas por la pandemia de COVID-19, el desarrollo quedó paralizado.
 
-## How to Run Locally
-1. Clone the repository.
-2. Import the `worldbook.sql` file located in the `/database` folder into your MySQL server.
-3. Set up your server environment (e.g., XAMPP or WAMP) and configure the `config.php` file.
-4. Run the application locally at `http://localhost/worldbook`.
+## Tecnologías Usadas
+- **Frontend:** HTML, CSS, Bootstrap
+- **Backend:** PHP
+- **Base de Datos:** MySQL
 
-## Current Status
-The project is currently in development and in its pilot phase.
+## Contribuciones
+Si estás interesado en contribuir al proyecto para reactivarlo, por favor contacta a los autores.
+
+---
 
